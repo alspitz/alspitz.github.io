@@ -1,0 +1,40 @@
+body {
+  background-color: white;
+}
+
+h1, h2, p, li {
+  color: #000000;
+  max-width: 70vw;
+  text-align: left;
+  margin:25px auto;
+  font-family: helvetica neue;
+  font-size: 36px;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+p, li {
+  font-size: 16px;
+  margin: 0px auto;
+}
+
+img.main {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 120px;
+}
+
+img.paper {
+  margin-left: 0;
+  margin-right: auto;
+  max-width: 50vw;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+a.paper {
+  font-size: 22px;
+}
