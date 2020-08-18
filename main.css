@@ -38,3 +38,30 @@ img.paper {
 a.paper {
   font-size: 22px;
 }
+
+.overlay {
+  position: absolute;
+  top: 120px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  z-index: 1; /* TODO Solve this in HTML */
+}
+
+#title {
+  top: 10px;
+  font-family: helvetica neue;
+  font-size: 48px;
+}
+
+#info2 {
+  top: 80px;
+  font-family: helvetica neue;
+  font-size: 24px;
+}
+
+#speed {
+  top: 150px;
+  font-family: helvetica neue;
+  font-size: 24px;
+}
