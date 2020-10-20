@@ -45,7 +45,7 @@ function init() {
   camera.position.z = 3;
 
   renderer = new THREE.WebGLRenderer( { antialias: true } );
-  renderer.setClearColor( 0xeeffff, 1 );
+  renderer.setClearColor( 0xffffff, 1 );
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
 

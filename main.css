@@ -4,11 +4,17 @@ body {
 
 h1, h2, p, li {
   color: #000000;
-  max-width: 70vw;
+  max-width: 60vw;
   text-align: left;
   margin:25px auto;
   font-family: helvetica neue;
-  font-size: 36px;
+  font-size: 24px;
+}
+
+.ext {
+  margin-top: 20px;
+  display: block;
+  text-align: center;
 }
 
 h1, h2 {
@@ -16,27 +22,34 @@ h1, h2 {
 }
 
 p, li {
-  font-size: 16px;
+  font-size: 14px;
   margin: 0px auto;
 }
 
-img.main {
-  display: block;
+.circ-port {
   margin-left: auto;
   margin-right: auto;
-  min-width: 120px;
+  position: relative;
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.circ-port img {
+  width: 100%;
+  height: auto;
 }
 
 img.paper {
-  margin-left: 0;
   margin-right: auto;
-  max-width: 50vw;
+  max-height: 10vw;
   padding-bottom: 10px;
   padding-top: 10px;
 }
 
 a.paper {
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .overlay {
