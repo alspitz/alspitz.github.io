@@ -3,14 +3,34 @@
   <head>
     <title>Quadrotor Simulation</title>
     <link rel="stylesheet" type="text/css" href="main.css">
+    <script type="module" src="js/fblin.js"></script>
   </head>
 
   <body>
     <div class="overlay" id="title">Quadrotor Simulation</div>
-    <div class="overlay" id="info2">Right Click to Set a Goal</div>
+    <div class="overlay" id="info1">Use WASD to fly around</div>
+    <div class="overlay" id="info2">Right click to set a goal</div>
     <div class="overlay" id="info"></div>
     <div class="overlay" id="speed"></div>
-    <script type="module" src="js/fblin.js"></script>
+
+    <div style="text-align: center" class="sim" id="sim"></div>
+
+    <!--div style="text-align: center">
+    <select id="controltype">
+      <option value="cso3">Continuous SO(3)</option>
+      <option value="dso3">Discontinuous SO(3)</option>
+      <option value="redatt">Reduced Attitude</option>
+      <option value="fblin">Feedback Linearization</option>
+    </select>
+    </div-->
+
+    <div style="text-align: center">
+      X: <input type="number" id="desx1">
+      Y: <input type="number" id="desy1">
+      Z: <input type="number" id="desz1">
+      <button type="button" id="gobut">GO</button>
+      <button type="button" id="homebut">Home</button>
+    </div>
   </body>
 
 </html>

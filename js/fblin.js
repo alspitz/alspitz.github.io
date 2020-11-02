@@ -6,11 +6,12 @@ var geometry, material, mesh;
 var controls;
 
 var model;
-var radius;
+var goal_marker;
 
 var K_pos, K_vel, K_rot, K_ang;
 
 var posdes;
+var yawdes = 0.0;
 var pos, vel, ang;
 var rot;
 
@@ -20,10 +21,65 @@ var dt;
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
+var CANVAS_WIDTH = 1280;
+var CANVAS_HEIGHT = 720;
+
+const homeheight = 1.0;
+const startpos = new THREE.Vector3(1.0, 1.0, homeheight);
+
+var desx1 = document.getElementById("desx1");
+var desy1 = document.getElementById("desy1");
+var desz1 = document.getElementById("desz1");
+
 document.addEventListener('mouseup', onMouseClick, false);
+document.addEventListener("keydown", onDocumentKeyDown, false);
 
 init();
 animate();
+
+document.getElementById('gobut').onclick =
+function onGo() {
+  var x = parseFloat(desx1.value);
+  var y = parseFloat(desy1.value);
+  var z = parseFloat(desz1.value);
+
+  if (Math.abs(x) > 5 || Math.abs(y) > 5 || Math.abs(z) > 5) {
+    console.log("Desired position out of bounds.");
+    return;
+  }
+
+  setposdes(new THREE.Vector3(x, y, z));
+};
+
+document.getElementById('homebut').onclick =
+function onHome() {
+  setposdes(new THREE.Vector3(0, 0, homeheight));
+};
+
+function onDocumentKeyDown(event) {
+  var keycode = event.which;
+  let newdes = new THREE.Vector3(posdes.x, posdes.y, posdes.z);
+  if (keycode == 87) {
+    newdes.x += 1.0;
+  }
+  if (keycode == 83) {
+    newdes.x -= 1.0;
+  }
+  if (keycode == 65) {
+    newdes.y += 1.0;
+  }
+  if (keycode == 68) {
+    newdes.y -= 1.0;
+  }
+  if (keycode == 69) {
+    newdes.z += 0.5
+  }
+  if (keycode == 81) {
+    newdes.z -= 0.5
+  }
+
+  setposdes(newdes);
+};
 
 function onMouseClick(event) {
   if (event.button != 2) {
@@ -31,23 +87,37 @@ function onMouseClick(event) {
   }
 
   event.preventDefault();
-  mouse.x =  (event.clientX / window.innerWidth)  * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x =  ((event.clientX - rect.left) / CANVAS_WIDTH)  * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / CANVAS_HEIGHT) * 2 + 1;
   raycaster.setFromCamera(mouse, camera);
   raycaster.ray.closestPointToPoint(posdes, posdes);
+  setposdes(posdes);
+}
+
+function setposdes(vec) {
+  vec.x = Math.min(5, Math.max(-5, vec.x));
+  vec.y = Math.min(5, Math.max(-5, vec.y));
+  vec.z = Math.min(5, Math.max(-5, vec.z));
+
+  posdes = vec;
+  goal_marker.position.set(vec.x, vec.y, vec.z);
+  desx1.value = vec.x;
+  desy1.value = vec.y;
+  desz1.value = vec.z;
 }
 
 function init() {
   THREE.Object3D.DefaultUp = new THREE.Vector3(0, 0, 1);
 
-  camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 1000);
+  camera = new THREE.PerspectiveCamera(70, CANVAS_WIDTH / CANVAS_HEIGHT, 0.01, 1000);
   camera.position.x = -3;
   camera.position.z = 3;
 
   renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.setClearColor( 0xffffff, 1 );
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  document.body.appendChild( renderer.domElement );
+  renderer.setSize( CANVAS_WIDTH, CANVAS_HEIGHT );
+  document.getElementById('sim').appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.update();
@@ -71,14 +141,21 @@ function init() {
   grid.rotateX(Math.PI / 2);
   scene.add(grid);
 
+  const axesHelper = new THREE.AxesHelper(5);
+  axesHelper.material.linewidth = 10;
+  scene.add(axesHelper);
+
+  const geometry = new THREE.SphereGeometry(0.05, 8, 8);
+  const material = new THREE.MeshBasicMaterial({color: 0xf9812a});
+  goal_marker = new THREE.Mesh(geometry, material);
+  scene.add(goal_marker);
+
   initsim();
 }
 
 function initsim() {
   gravity = new THREE.Vector3(0, 0, -9.81);
   dt = 0.02;
-
-  radius = 3;
 
   pos = new THREE.Vector3();
   vel = new THREE.Vector3();
@@ -87,7 +164,7 @@ function initsim() {
   rot = new THREE.Matrix4();
   rot.identity();
 
-  posdes = new THREE.Vector3(1, 1, 1);
+  setposdes(startpos);
 
   K_pos = new THREE.Matrix3();
   K_vel = new THREE.Matrix3();
@@ -99,10 +176,10 @@ function initsim() {
   K_rot.identity();
   K_ang.identity();
 
-  K_pos.multiplyScalar(6.0);
+  K_pos.multiplyScalar(7.0);
   K_vel.multiplyScalar(4.0);
-  K_rot.multiplyScalar(120);
-  K_ang.multiplyScalar(16);
+  K_rot.multiplyScalar(190);
+  K_ang.multiplyScalar(25);
 }
 
 function control(posdes, pos, vel, rot, ang) {
