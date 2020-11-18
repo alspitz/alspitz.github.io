@@ -127,9 +127,11 @@ function init() {
 
   var loader = new GLTFLoader();
 
-  loader.load('models/hex.gltf', function ( gltf ) {
+  loader.load('models/quad.glb', function ( gltf ) {
     model = gltf.scene;
-    scene.add( gltf.scene );
+    model.scale.set(0.1, 0.1, 0.1);
+
+    scene.add(model);
   }, undefined, function (error) {
     console.error(error);
   });
@@ -141,7 +143,7 @@ function init() {
   grid.rotateX(Math.PI / 2);
   scene.add(grid);
 
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new THREE.AxesHelper(1);
   axesHelper.material.linewidth = 10;
   scene.add(axesHelper);
 
@@ -149,6 +151,20 @@ function init() {
   const material = new THREE.MeshBasicMaterial({color: 0xf9812a});
   goal_marker = new THREE.Mesh(geometry, material);
   scene.add(goal_marker);
+
+  const geo = new THREE.PlaneGeometry(10, 10, 32);
+  const mat = new THREE.MeshBasicMaterial({color:0xfafafa, side: THREE.DoubleSide});
+  const plane = new THREE.Mesh(geo, mat);
+  scene.add(plane);
+
+  let light1 = new THREE.PointLight(0xffffff, 1, 0, 0);
+  light1.position.set(0, 0, 10.0);
+  let light2 = new THREE.AmbientLight(0xffffff);
+  let light3 = new THREE.DirectionalLight(0xffffff, 1.0, 100);
+  light3.position.set(0, 0, 10);
+  scene.add(light1);
+  scene.add(light2);
+  scene.add(light3);
 
   initsim();
 }
