@@ -2,7 +2,7 @@ body {
   background-color: white;
 }
 
-h1, h2, p, li {
+h1, h2, h3, p, li {
   color: #000000;
   max-width: 50vw;
   text-align: left;
@@ -21,8 +21,17 @@ h1 {
   text-decoration: none;
 }
 
-h1, h2 {
+h1, h2, h3 {
   text-align: center;
+}
+
+h2 {
+  margin: 15px auto;
+}
+
+h3 {
+  font-size: 16px;
+  margin: 5px auto;
 }
 
 p, li {
@@ -75,6 +84,14 @@ a.paper {
 
 .sim {
   margin: 0 auto;
+}
+
+.testbut {
+  width: 200px;
+}
+
+#homebut {
+  margin-bottom: 10px;
 }
 
 #title {
