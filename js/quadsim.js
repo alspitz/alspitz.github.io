@@ -27,8 +27,10 @@ K_vel.identity();
 K_rot.identity();
 K_ang.identity();
 
+// Desired State
 var posdes;
 var yawdes = 0.0;
+// Actual State
 var pos = new THREE.Vector3();
 var vel, ang;
 var rot;
@@ -149,12 +151,12 @@ control_sel.addEventListener("change", changeControl);
 init();
 animate();
 
-document.getElementById('homebut').onclick =
-function onHome() {
+function destohome() {
   yawdes = 0.0;
   setposdes(homepos.clone());
-};
+}
 
+document.getElementById('homebut').onclick = destohome;
 document.getElementById('resetcambut').onclick = resetcam;
 document.getElementById('sidecambut').onclick = sidecam;
 document.getElementById('topcambut').onclick = topcam;
@@ -170,8 +172,21 @@ followbox.onchange = function() {
   }
 };
 
+function reset_to_home() {
+  pos.set(homepos.x, homepos.y, homepos.z);
+  vel.set(0, 0, 0);
+  rot.identity();
+  ang.set(0, 0, 0);
+
+  fblin_reset();
+
+  destohome();
+}
+
+// Quick Direction Change
 document.getElementById('step1').onclick =
 function on1() {
+  reset_to_home();
   rot.makeRotationX(-Math.PI / 2 + 0.1);
   let newposdes = posdes.clone();
   newposdes.y -= 5.0;
@@ -179,16 +194,20 @@ function on1() {
 };
 
 
+// Pos Yaw Step
 document.getElementById('step2').onclick =
 function on2() {
+  reset_to_home();
   yawdes += Math.PI - 0.05;
   let newposdes = posdes.clone();
   newposdes.y += posyaw_step_size;
   setposdes(newposdes);
 };
 
+// Diagonal Step
 document.getElementById('step3').onclick =
 function on3() {
+  reset_to_home();
   let newposdes = posdes.clone();
   newposdes.x += diag_step_size;
   newposdes.y += diag_step_size;
@@ -202,32 +221,32 @@ function onDocumentKeyDown(event) {
   let used = true;
 
   let dpos = new THREE.Vector3(0, 0, 0);
-  if (keycode == 87) {
+  if (keycode == 87) { // W
     dpos.x += move_amount;
   }
-  else if (keycode == 83) {
+  else if (keycode == 83) { // S
     dpos.x -= move_amount;
   }
-  else if (keycode == 65) {
+  else if (keycode == 65) { // A
     dpos.y += move_amount;
   }
-  else if (keycode == 68) {
+  else if (keycode == 68) { // D
     dpos.y -= move_amount;
   }
 
-  else if (keycode == 69) {
+  else if (keycode == 69) { // E
     dpos.y -= move_amount;
     dpos.x += move_amount;
   }
-  else if (keycode == 81) {
+  else if (keycode == 81) { // Q
     dpos.y += move_amount;
     dpos.x += move_amount;
   }
 
-  else if (keycode == 38) {
+  else if (keycode == 38) { // up
     dpos.z += upmove_amount;
   }
-  else if (keycode == 40) {
+  else if (keycode == 40) { // down
     dpos.z -= upmove_amount;
   }
 
@@ -241,7 +260,8 @@ function onDocumentKeyDown(event) {
     used = false;
   }
 
-  if (used) {
+  // Hack to prevent vertical scrolling
+  if (keycode == 38 || keycode == 40) {
     event.preventDefault();
   }
 
@@ -414,10 +434,20 @@ function initsim() {
   setposdes(startpos);
 }
 
-let u = gmag;
-let udot = 0.0;
+let fblin_u;
+let fblin_udot;
+
+fblin_reset();
+
+function fblin_reset() {
+  fblin_u = gmag;
+  fblin_udot = 0.0;
+}
 
 function fblin(posdes, yawdes, pos, vel, rot, ang) {
+  const u = fblin_u;
+  const udot = fblin_udot;
+
   let k1 = K_pos.clone();
   k1.multiplyScalar(K_rot.elements[0]);
   let k2 = K_vel.clone();
@@ -443,8 +473,8 @@ function fblin(posdes, yawdes, pos, vel, rot, ang) {
 
   let uddot = snap_ff_B.z - k3 * (u + grav_B.z) - k4 * udot + u * (ang.x * ang.x + ang.y * ang.y);
 
-  u += udot * dt;
-  udot += uddot * dt;
+  fblin_u += udot * dt;
+  fblin_udot += uddot * dt;
 
   // TODO, Use actual FBLin yaw controller.
   let euler = new THREE.Euler();
@@ -453,7 +483,7 @@ function fblin(posdes, yawdes, pos, vel, rot, ang) {
 
   document.getElementById("info").innerHTML = `Thrust: ${u.toFixed(2)}. Thrust Vel: ${udot.toFixed(2)}. Thrust Acc: ${uddot.toFixed(2)}. Ang acc: ${aa.x.toFixed(2)}, ${aa.y.toFixed(2)}, ${aa.z.toFixed(2)}`;
 
-  return [u, aa];
+  return [fblin_u, aa];
 }
 
 function control(posdes, yawdes, pos, vel, rot, ang) {
