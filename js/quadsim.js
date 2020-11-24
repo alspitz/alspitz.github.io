@@ -159,6 +159,7 @@ function destohome() {
 document.getElementById('homebut').onclick = destohome;
 document.getElementById('resetcambut').onclick = resetcam;
 document.getElementById('sidecambut').onclick = sidecam;
+document.getElementById('diagcambut').onclick = diagcam;
 document.getElementById('topcambut').onclick = topcam;
 document.getElementById('sidecamorthobut').onclick = sidecamortho;
 document.getElementById('resetdefbut').onclick = set_default_settings;
@@ -323,32 +324,41 @@ function resetcamcontrol(target) {
 
   followbox.checked = false;
 }
+function perspectivecam(fov) {
+  camera = new THREE.PerspectiveCamera(fov, CANVAS_WIDTH / CANVAS_HEIGHT, 0.01, 1000);
+}
+function orthocam(height) {
+  const width = height * (CANVAS_WIDTH / CANVAS_HEIGHT);
+  camera = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 0.01, 1000);
+}
 function resetcam() {
-  camera = new THREE.PerspectiveCamera(60, CANVAS_WIDTH / CANVAS_HEIGHT, 0.01, 1000);
+  perspectivecam(60);
   camera.position.set(-5.5, 0, 5.5);
   camera.lookAt(0, 0, homeheight);
   resetcamcontrol(homepos);
 }
 function sidecam() {
-  camera = new THREE.PerspectiveCamera(60, CANVAS_WIDTH / CANVAS_HEIGHT, 0.01, 1000);
+  perspectivecam(60);
   camera.position.set(0, 6.0, homeheight);
   camera.lookAt(0, 0, homeheight);
   resetcamcontrol(homepos);
 }
+function diagcam() {
+  perspectivecam(40);
+  camera.position.set(-1.0, -1.0, homeheight);
+  camera.lookAt(0, 0, homeheight);
+  resetcamcontrol(homepos);
+}
 function topcam() {
-  const height = 10.0;
-  const width = height * (CANVAS_WIDTH / CANVAS_HEIGHT);
-  camera = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 0.01, 1000);
+  orthocam(10.0);
   camera.position.set(0, 0, 6.0);
   camera.up.set(1, 0, 0);
   camera.lookAt(0, 0, homeheight);
   resetcamcontrol(homepos);
 }
 function sidecamortho() {
-  const height = 10.0;
-  const width = height * (CANVAS_WIDTH / CANVAS_HEIGHT);
-  camera = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 0.01, 1000);
-  camera.position.set(0, 7.0, homeheight);
+  orthocam(5.0);
+  camera.position.set(0, 5.0, homeheight);
   camera.lookAt(0, 0, homeheight);
   resetcamcontrol(homepos);
 }
