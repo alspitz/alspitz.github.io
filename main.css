@@ -38,6 +38,22 @@ p, li {
   font-size: 14px;
 }
 
+.headerdiv {
+  margin: auto;
+  text-align: center;
+  border: 2px solid #bbbbbb;
+}
+
+a.headerlink {
+  appearance: button;
+  text-decoration: none;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 20px;
+}
+
 .circ-port {
   margin-right: 100px;
   position: relative;
