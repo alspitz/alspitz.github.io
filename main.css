@@ -98,8 +98,8 @@ a.paper {
   z-index: 1; */
 }
 
-.sim {
-  margin: 0 auto;
+#simcell {
+  vertical-align: top;
 }
 
 .testbut {

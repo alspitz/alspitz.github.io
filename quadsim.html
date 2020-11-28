@@ -14,51 +14,51 @@
     <script type="module" src="js/quadsim.js"></script>
 
     <div class="overlay" id="title">Quadrotor Simulation</div>
-    <div class="overlay" id="info1">Use WASD and Arrow Keys to fly around</div>
+    <div class="overlay" id="info1">WASD and Arrow Keys to fly around</div>
     <div class="overlay" id="info2">Left click to pan, right click to set a goal</div>
-    <div class="overlay" id="speed"></div>
-    <div class="overlay" id="info"></div>
 
     <table>
-      <tr><td>
-    <div style="text-align: center" class="sim" id="sim"></div>
+    <tr>
+      <td id="simcell">
+        <div class="sim" id="sim"></div>
+          <div class="overlay" id="speed"></div>
+        <div class="overlay" id="info"></div>
       </td>
 
-        <td>
-    <div style="text-align: center">
-    <h2> Attitude Control </h2>
+      <td>
+        <div style="text-align: center">
+          <h2> Attitude Control </h2>
 
-    <select id="controltype">
-      <option value="cso3">Continuous SO(3)</option>
-      <option value="dso3">Discontinuous SO(3)</option>
-      <option value="redatt">Reduced Attitude</option>
-      <option value="fblin">Feedback Linearization</option>
-    </select>
+          <select id="controltype">
+            <option value="cso3">Continuous SO(3)</option>
+            <option value="dso3">Discontinuous SO(3)</option>
+            <option value="redatt">Reduced Attitude</option>
+            <option value="fblin">Feedback Linearization</option>
+          </select>
 
-    <h2> Test Cases </h2>
-      <button type="button" class="testbut" id="homebut">Return to Origin</button>
-      <button type="button" class="testbut" id="step1">Quick Direction Change</button><br>
-      <button type="button" class="testbut" id="step2">Position Yaw Step</button><br>
-      <button type="button" class="testbut" id="step3">Diagonal Step</button>
+          <h2> Test Cases </h2>
+            <button type="button" class="testbut" id="homebut">Return to Origin</button>
+            <button type="button" class="testbut" id="step1">Quick Direction Change</button><br>
+            <button type="button" class="testbut" id="step2">Position Yaw Step</button><br>
+            <button type="button" class="testbut" id="step3">Diagonal Step</button>
 
-    <h2> Settings </h2>
-      <h3> Camera </h3>
-      <button type="button" class="testbut" id="resetcambut">Default View</button>
-      <button type="button" class="testbut" id="sidecambut">Side View</button>
-      <button type="button" class="testbut" id="diagcambut">Diagonal View</button>
-      <button type="button" class="testbut" id="topcambut">Top Ortho View</button>
-      <button type="button" class="testbut" id="sidecamorthobut">Side Ortho View</button>
-      Follow Drone <input type="checkbox" id="followbox"/>
-      <h3> Control </h3>
-      <div id="settingsdiv">
-      </div>
-      <br>
-      <button type="button" class="testbut" id="resetdefbut">Reset Defaults</button>
-
-    </div>
+          <h2> Settings </h2>
+            <h3> Camera </h3>
+            <button type="button" class="testbut" id="resetcambut">Default View</button>
+            <button type="button" class="testbut" id="sidecambut">Side View</button>
+            <button type="button" class="testbut" id="diagcambut">Diagonal View</button>
+            <button type="button" class="testbut" id="topcambut">Top Ortho View</button>
+            <button type="button" class="testbut" id="sidecamorthobut">Side Ortho View</button>
+            Follow Drone <input type="checkbox" id="followbox"/>
+            <h3> Control </h3>
+            <div id="settingsdiv"></div>
+            <br>
+            <button type="button" class="testbut" id="resetdefbut">Reset Defaults</button>
+        </div>
       </td>
-      </tr>
+    </tr>
     </table>
+
   </body>
 
 </html>
