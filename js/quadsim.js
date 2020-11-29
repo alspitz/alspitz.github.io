@@ -363,7 +363,7 @@ function resetcam() {
 }
 function sidecam() {
   perspectivecam(60);
-  camera.position.set(0, 6.0, homeheight);
+  camera.position.set(0, 6.0, homeheight + 0.75);
   camera.lookAt(0, 0, homeheight);
   resetcamcontrol(homepos);
 }

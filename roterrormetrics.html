@@ -13,8 +13,39 @@
 </p>
 
 <p>
-See <a href="quadsim.html">Quadrotor Simulation</a> for a sandbox where the simulation experiments described in the workshop paper can be visualized.
+See <a href="quadsim.html">Quadrotor Simulation</a> for a sandbox where the simulation experiments described in the workshop paper and shown here can be run interactively.
 </p>
+
+<h2> Simultaneous Position and Yaw Step </h2>
+
+<p> <b>Objective</b>: Translate 3 meters and turn 180 degrees in yaw simultaneously. Step inputs are provided to the controller in position and yaw. </p>
+
+<h3> Continuous SO(3) - "Skew Symmetric" Control </h3>
+<p style="text-align: center">
+<video width="600" height="300" controls loop>
+  <source src="videos/cso3_posyaw.mp4" type="video/mp4">
+</video>
+</p>
+<h3> Discontinuous SO(3) - "Quaternion" Control </h3>
+<p style="text-align: center">
+<video width="600" height="300" controls loop>
+  <source src="videos/dso3_posyaw.mp4" type="video/mp4">
+</video>
+</p>
+<p>Note the significant sideways deviation for both controllers that use full SO(3) control.</p>
+<h3> Reduced Attitude Control </h3>
+<p style="text-align: center">
+<video width="600" height="300" controls loop>
+  <source src="videos/red_posyaw.mp4" type="video/mp4">
+</video>
+</p>
+<h3> Feedback Linearization </h3>
+<p style="text-align: center">
+<video width="600" height="300" controls loop>
+  <source src="videos/fblin_posyaw.mp4" type="video/mp4">
+</video>
+</p>
+<p> Reduced attitude control and feedback linearization follow much more linear paths to the goal position. </p>
 
 <p>
 More coming soon!
