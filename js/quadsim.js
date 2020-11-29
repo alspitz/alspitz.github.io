@@ -156,7 +156,16 @@ function destohome() {
   setposdes(homepos.clone());
 }
 
-document.getElementById('homebut').onclick = destohome;
+function return_to_origin_but() {
+  if (is_blown_up()) {
+    reset_to_home();
+  }
+  else {
+    destohome();
+  }
+}
+
+document.getElementById('homebut').onclick = return_to_origin_but;
 document.getElementById('resetcambut').onclick = resetcam;
 document.getElementById('sidecambut').onclick = sidecam;
 document.getElementById('diagcambut').onclick = diagcam;
@@ -172,6 +181,21 @@ followbox.onchange = function() {
     controls.target = homepos.clone();
   }
 };
+
+function is_blown_up() {
+  return (
+    isNaN(pos.x) ||
+    isNaN(pos.y) ||
+    isNaN(pos.z) ||
+    isNaN(vel.x) ||
+    isNaN(vel.y) ||
+    isNaN(vel.z) ||
+    rot.elements.some((x) => isNaN(x)) ||
+    isNaN(ang.x) ||
+    isNaN(ang.y) ||
+    isNaN(ang.z) ||
+    fblin_isnan());
+}
 
 function reset_to_home() {
   pos.set(homepos.x, homepos.y, homepos.z);
@@ -452,6 +476,10 @@ fblin_reset();
 function fblin_reset() {
   fblin_u = gmag;
   fblin_udot = 0.0;
+}
+
+function fblin_isnan() {
+  return isNaN(fblin_u) || isNaN(fblin_udot);
 }
 
 function fblin(posdes, yawdes, pos, vel, rot, ang) {
