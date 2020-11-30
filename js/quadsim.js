@@ -375,14 +375,12 @@ function resetcam() {
 }
 function sidecam() {
   perspectivecam(60);
-  camera.position.set(0, 6.0, homeheight + 0.75);
-  camera.lookAt(0, 0, homeheight);
+  camera.position.set(0, posyaw_step_size + 2.5, homeheight + 0.75);
   resetcamcontrol(homepos);
 }
 function diagcam() {
   perspectivecam(40);
-  camera.position.set(-1.0, -1.0, homeheight);
-  camera.lookAt(0, 0, homeheight);
+  camera.position.set(-1.5, -1.5, homeheight + 0.50);
   resetcamcontrol(homepos);
 }
 function topcam() {
