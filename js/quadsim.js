@@ -86,17 +86,17 @@ function yawvelgainset(name, val) {
 var move_amount, upmove_amount, turn_amount, posyaw_step_size, diag_step_size;
 let gmag = 9.81;
 var settings_meta = [
-  ["position gain", 7.0, posgainset, ""],
-  ["velocity gain", 4.0, velgainset, ""],
-  ["roll/pitch gain", 190.0, anggainset, ""],
-  ["ang. vel. gain", 25.0, angvelgainset, ""],
-  ["yaw gain", 30.0, yawgainset, ""],
-  ["yaw vel. gain", 10.0, yawvelgainset, ""],
-  ["horiz. move distance", 1.0, defset, "move_amount"],
-  ["vert. move distance", 0.5, defset, "upmove_amount"],
-  ["turn amount", Math.PI / 4.0, defset, "turn_amount"],
-  ["pos yaw step size", 3.0, defset, "posyaw_step_size"],
-  ["diag step size", 4.0, defset, "diag_step_size"],
+  ["position gain", 7.0, posgainset, "", 0, 20],
+  ["velocity gain", 4.0, velgainset, "", 0, 20],
+  ["roll/pitch gain", 190.0, anggainset, "", 0, 400],
+  ["ang. vel. gain", 25.0, angvelgainset, "", 0, 100],
+  ["yaw gain", 30.0, yawgainset, "", 0, 100],
+  ["yaw vel. gain", 10.0, yawvelgainset, "", 0, 50],
+  ["horiz. move distance", 1.0, defset, "move_amount", 0.05, 5],
+  ["vert. move distance", 0.5, defset, "upmove_amount", 0.05, 5],
+  ["turn amount", Math.PI / 4.0, defset, "turn_amount", 0.01, Math.PI],
+  ["pos yaw step size", 3.0, defset, "posyaw_step_size", 1, 5],
+  ["diag step size", 4.0, defset, "diag_step_size", 1, 5],
 ];
 
 function getsettingid(i) {
@@ -113,9 +113,15 @@ function create_settings() {
     let f_set = settings_meta[i][2];
     let varname = settings_meta[i][3];
 
+    let minval = settings_meta[i][4];
+    let maxval = settings_meta[i][5];
+
+    let step = (maxval - minval) / 20;
+
     let entryid = getsettingid(i);
-    settingsdiv.innerHTML += "<tr><td>" + name + "</td><td>";
-    settingsdiv.innerHTML += `<input type=\"number\" style=\"text-align: right;\" id=\"${entryid}\"/>`;
+    settingsdiv.innerHTML += "<tr><td>" + name + "</td><td><br>";
+    settingsdiv.innerHTML += `<input type="range" min="${minval}" max="${maxval}" step="${step}" id="range${entryid}"/>`;
+    settingsdiv.innerHTML += `<input type="text" style="text-align: right; width: 2.5em" id="${entryid}"/>`;
     settingsdiv.innerHTML += "</td></tr><br>";
   }
 
@@ -130,9 +136,15 @@ function set_default_settings() {
 
     let entryid = getsettingid(i);
     let entry = document.getElementById(entryid);
+    let range = document.getElementById("range" + entryid);
+
     entry.value = defval;
+    range.value = defval;
     f_set(varname, defval);
-    entry.addEventListener('change', function() { f_set(varname, entry.value); });
+
+    entry.addEventListener('change', function() { f_set(varname, entry.value); range.value = entry.value});
+    range.addEventListener('input', function() { entry.value = range.value});
+    range.addEventListener('change', function() { f_set(varname, range.value); });
   }
 }
 
