@@ -13,7 +13,9 @@ var camera, scene, renderer;
 var geometry, material, mesh;
 var controls;
 
-let followbox = document.getElementById('followbox');
+const followbox = document.getElementById('followbox');
+const infoelem = document.getElementById("info");
+const speedelem = document.getElementById("speed");
 
 var model;
 var goal_marker;
@@ -46,9 +48,6 @@ var dt;
 
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
-
-var CANVAS_WIDTH = 1280;
-var CANVAS_HEIGHT = 720;
 
 const homeheight = 2.0;
 const homepos = new THREE.Vector3(0, 0, homeheight);
@@ -84,8 +83,8 @@ function yawvelgainset(name, val) {
 }
 
 var move_amount, upmove_amount, turn_amount, posyaw_step_size, diag_step_size;
-let gmag = 9.81;
-var settings_meta = [
+const gmag = 9.81;
+const settings_meta = [
   ["position gain", 7.0, posgainset, "", 0, 20],
   ["velocity gain", 4.0, velgainset, "", 0, 20],
   ["roll/pitch gain", 190.0, anggainset, "", 0, 400],
@@ -105,6 +104,10 @@ function getsettingid(i) {
 
 function create_settings() {
   let settingsdiv = document.getElementById("settingsdiv");
+  if (!settingsdiv) {
+    return;
+  }
+
   settingsdiv.innerHTML += "<table>";
 
   for (let i = 0; i < settings_meta.length; i++) {
@@ -138,13 +141,22 @@ function set_default_settings() {
     let entry = document.getElementById(entryid);
     let range = document.getElementById("range" + entryid);
 
-    entry.value = defval;
-    range.value = defval;
+    if (entry) {
+      entry.value = defval;
+    }
+    if (range) {
+      range.value = defval;
+    }
+
     f_set(varname, defval);
 
-    entry.addEventListener('change', function() { f_set(varname, entry.value); range.value = entry.value});
-    range.addEventListener('input', function() { entry.value = range.value});
-    range.addEventListener('change', function() { f_set(varname, range.value); });
+    if (range) {
+      range.addEventListener('change', function() { f_set(varname, range.value); });
+      if (entry) {
+        entry.addEventListener('change', function() { f_set(varname, entry.value); range.value = entry.value});
+        range.addEventListener('input', function() { entry.value = range.value});
+      }
+    }
   }
 }
 
@@ -157,8 +169,10 @@ window.onload = function() {
 document.addEventListener('mouseup', onMouseClick, false);
 document.addEventListener("keydown", onDocumentKeyDown, false);
 
-var control_sel = document.getElementById("controltype");
-control_sel.addEventListener("change", changeControl);
+const control_sel = document.getElementById("controltype");
+if (control_sel) {
+  control_sel.addEventListener("change", changeControl);
+}
 
 init();
 animate();
@@ -177,22 +191,33 @@ function return_to_origin_but() {
   }
 }
 
-document.getElementById('homebut').onclick = return_to_origin_but;
-document.getElementById('resetcambut').onclick = resetcam;
-document.getElementById('sidecambut').onclick = sidecam;
-document.getElementById('diagcambut').onclick = diagcam;
-document.getElementById('topcambut').onclick = topcam;
-document.getElementById('sidecamorthobut').onclick = sidecamortho;
-document.getElementById('resetdefbut').onclick = set_default_settings;
+const camfuncs = [
+  ['homebut', return_to_origin_but],
+  ['resetcambut', resetcam],
+  ['sidecambut', sidecam],
+  ['diagcambut', diagcam],
+  ['topcambut', topcam],
+  ['sidecamorthobut', sidecamortho],
+  ['resetdefbut', set_default_settings],
+];
 
-followbox.onchange = function() {
-  if (followbox.checked) {
-    controls.target = pos;
+for (let i = 0; i < camfuncs.length; i++) {
+  const elem = document.getElementById(camfuncs[i][0]);
+  if (elem) {
+    elem.onclick = camfuncs[i][1];
   }
-  else {
-    controls.target = homepos.clone();
-  }
-};
+}
+
+if (followbox) {
+  followbox.onchange = function() {
+    if (followbox.checked) {
+      controls.target = pos;
+    }
+    else {
+      controls.target = homepos.clone();
+    }
+  };
+}
 
 function is_blown_up() {
   return (
@@ -220,36 +245,45 @@ function reset_to_home() {
   destohome();
 }
 
-// Quick Direction Change
-document.getElementById('step1').onclick =
-function on1() {
-  reset_to_home();
-  rot.makeRotationX(-Math.PI / 2 + 0.1);
-  let newposdes = posdes.clone();
-  newposdes.y -= 5.0;
-  setposdes(newposdes);
-};
+const step1 = document.getElementById('step1');
+const step2 = document.getElementById('step2');
+const step3 = document.getElementById('step3');
 
+// Quick Direction Change
+if (step1) {
+  step1.onclick =
+  function on1() {
+    reset_to_home();
+    rot.makeRotationX(-Math.PI / 2 + 0.1);
+    let newposdes = posdes.clone();
+    newposdes.y -= 5.0;
+    setposdes(newposdes);
+  };
+}
 
 // Pos Yaw Step
-document.getElementById('step2').onclick =
-function on2() {
-  reset_to_home();
-  yawdes += Math.PI - 0.05;
-  let newposdes = posdes.clone();
-  newposdes.y += posyaw_step_size;
-  setposdes(newposdes);
-};
+if (step2) {
+  step2.onclick =
+  function on2() {
+    reset_to_home();
+    yawdes += Math.PI - 0.05;
+    let newposdes = posdes.clone();
+    newposdes.y += posyaw_step_size;
+    setposdes(newposdes);
+  };
+}
 
 // Diagonal Step
-document.getElementById('step3').onclick =
-function on3() {
-  reset_to_home();
-  let newposdes = posdes.clone();
-  newposdes.x += diag_step_size;
-  newposdes.y += diag_step_size;
-  setposdes(newposdes);
-};
+if (step3) {
+  step3.onclick =
+  function on3() {
+    reset_to_home();
+    let newposdes = posdes.clone();
+    newposdes.x += diag_step_size;
+    newposdes.y += diag_step_size;
+    setposdes(newposdes);
+  };
+}
 
 function onDocumentKeyDown(event) {
   var keycode = event.which;
@@ -317,15 +351,15 @@ function onMouseClick(event) {
 
   event.preventDefault();
   const rect = renderer.domElement.getBoundingClientRect();
-  mouse.x =  ((event.clientX - rect.left) / CANVAS_WIDTH)  * 2 - 1;
-  mouse.y = -((event.clientY - rect.top) / CANVAS_HEIGHT) * 2 + 1;
+  mouse.x =  ((event.clientX - rect.left) / canvas.clientWidth)  * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / canvas.clientHeight) * 2 + 1;
   raycaster.setFromCamera(mouse, camera);
   raycaster.ray.closestPointToPoint(posdes, posdes);
   setposdes(posdes);
 }
 
 function changeControl() {
-  let s = document.getElementById('controltype').value;
+  let s = control_sel.value;
   if (s == "cso3") {
     att_type = 0;
   }
@@ -358,13 +392,15 @@ function resetcamcontrol(target) {
   controls.target.set(target.x, target.y, target.z);
   controls.enablePan = false;
 
-  followbox.checked = false;
+  if (followbox) {
+    followbox.checked = false;
+  }
 }
 function perspectivecam(fov) {
-  camera = new THREE.PerspectiveCamera(fov, CANVAS_WIDTH / CANVAS_HEIGHT, 0.01, 1000);
+  camera = new THREE.PerspectiveCamera(fov, canvas.clientWidth / canvas.clientHeight, 0.01, 1000);
 }
 function orthocam(height) {
-  const width = height * (CANVAS_WIDTH / CANVAS_HEIGHT);
+  const width = height * (canvas.clientWidth / canvas.clientHeight);
   camera = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 0.01, 1000);
 }
 function resetcam() {
@@ -397,13 +433,20 @@ function sidecamortho() {
   resetcamcontrol(homepos);
 }
 
+var canvas;
+
 function init() {
   THREE.Object3D.DefaultUp = new THREE.Vector3(0, 0, 1);
 
-  renderer = new THREE.WebGLRenderer( { antialias: true } );
+  canvas = document.getElementById("sim");
+  renderer = new THREE.WebGLRenderer( { canvas : canvas, antialias: true } );
   renderer.setClearColor( 0xffffff, 1 );
-  renderer.setSize( CANVAS_WIDTH, CANVAS_HEIGHT );
-  document.getElementById('sim').appendChild(renderer.domElement);
+
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+
+  //renderer.setSize(width, height);
+  //document.getElementById('sim').appendChild(canvas);
 
   resetcam();
 
@@ -442,10 +485,6 @@ function init() {
   }, undefined, function (error) {
     console.error(error);
   });
-  //const geometry = new THREE.SphereGeometry(0.05, 8, 8);
-  //const material = new THREE.MeshBasicMaterial({color: 0xf9812a});
-  //goal_marker = new THREE.Mesh(geometry, material);
-  //scene.add(goal_marker);
 
   const geo = new THREE.PlaneGeometry(10, 10, 32);
   const mat = new THREE.MeshBasicMaterial({color:0xfafafa, side: THREE.DoubleSide, transparent: true, opacity: 0.75});
@@ -529,7 +568,9 @@ function fblin(posdes, yawdes, pos, vel, rot, ang) {
   euler.setFromRotationMatrix(rot);
   aa.z = -K_rot.elements[8] * normang(euler.z - yawdes) - K_ang.elements[8] * ang.z;
 
-  document.getElementById("info").innerHTML = `Thrust: ${u.toFixed(2)}. Thrust Vel: ${udot.toFixed(2)}. Thrust Acc: ${uddot.toFixed(2)}. Ang acc: ${aa.x.toFixed(2)}, ${aa.y.toFixed(2)}, ${aa.z.toFixed(2)}`;
+  if (infoelem) {
+    infoelem.innerHTML = `Thrust: ${u.toFixed(2)}. Thrust Vel: ${udot.toFixed(2)}. Thrust Acc: ${uddot.toFixed(2)}. Ang acc: ${aa.x.toFixed(2)}, ${aa.y.toFixed(2)}, ${aa.z.toFixed(2)}`;
+  }
 
   return [fblin_u, aa];
 }
@@ -566,7 +607,9 @@ function control(posdes, yawdes, pos, vel, rot, ang) {
   eR.add(eang)
   eR.multiplyScalar(-1);
 
-  document.getElementById("info").innerHTML = `Desired accel: (${accel_des.x.toFixed(2)}, ${accel_des.y.toFixed(2)}, ${accel_des.z.toFixed(2)}). Thrust: ${u.toFixed(2)}. Ang acc: ${eR.x.toFixed(2)}, ${eR.y.toFixed(2)}, ${eR.z.toFixed(2)}`;
+  if (infoelem) {
+    infoelem.innerHTML = `Desired accel: (${accel_des.x.toFixed(2)}, ${accel_des.y.toFixed(2)}, ${accel_des.z.toFixed(2)}). Thrust: ${u.toFixed(2)}. Ang acc: ${eR.x.toFixed(2)}, ${eR.y.toFixed(2)}, ${eR.z.toFixed(2)}`;
+  }
 
   return [u, eR];
 }
@@ -613,8 +656,24 @@ function sim(u, angacc) {
 
   ang.add(angacc.clone().multiplyScalar(dt));
 
-  var speed = vel.length();
-  document.getElementById("speed").innerHTML = `Speed: ${speed.toFixed(2)} m/s`;
+  if (speedelem) {
+    var speed = vel.length();
+    speedelem.innerHTML = `Speed: ${speed.toFixed(2)} m/s`;
+  }
+}
+
+function handle_resize() {
+  if (canvas.clientWidth !== canvas.width || canvas.clientHeight !== canvas.height) {
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+
+    // For perspectives
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    // For orthos
+    camera.right = camera.top * camera.aspect;
+    camera.left = camera.bottom * camera.aspect;
+
+    camera.updateProjectionMatrix();
+  }
 }
 
 function animate() {
@@ -637,5 +696,7 @@ function animate() {
   sim(uvec[0], uvec[1]);
 
   controls.update();
+
+  handle_resize();
   renderer.render(scene, camera);
 }
