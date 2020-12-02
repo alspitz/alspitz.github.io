@@ -4,6 +4,7 @@
 <head>
   <title>Alex Spitzer</title>
   <link rel="stylesheet" type="text/css" href="main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0">
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-155097007-1"></script>
@@ -21,52 +22,45 @@
 <div class="headerdiv" id="header"></div>
 <script src="header.js"></script>
 
-<h1>Alex Spitzer</h1>
-
-<table> <tr> <td>
-
-<div class="circ-port">
-  <img class="main" src=images/profile.jpg>
+<div id="namediv">
+  <h1 id="nametitle">Alex Spitzer</h1>
+  <div id="nameicons">
+    <a class="ext" target="_blank" href="https://github.com/alspitz">
+      <img src="images/github_logo.svg" style="width:32px;height:32px" alt="Alex Spitzer's GitHub"/>
+    </a>
+    <a class="ext" target="_blank" href="https://scholar.google.com/citations?user=1MrfrlgAAAAJ&hl=en">
+      <img src="images/scholar_logo.svg" style="width:32px;height:32px" alt="Alex Spitzer's Google Scholar"/>
+    </a>
+  </div>
 </div>
 
-</td>
-<td>
+<div class="container" id="aboutme">
+    <div id="mainimage">
+      <div class="circ-port">
+        <img class="main" alt="Alex Spitzer Headshot" src=images/profile.jpg>
+      </div>
+    </div>
+    <div id="aboutmepara">
+      <p>
+      I'm a Ph.D. student at Carnegie Mellon University advised by <a target="_blank" href="https://nmichael.me">Nathan Michael</a> and working with <a target="_blank" href="https://rislab.org">RISLAB</a> in the <a target="_blank" href="https://ri.cmu.edu">Robotics Institute</a>.
 
-<p>
-I'm a Ph.D. student at Carnegie Mellon University advised by <a target="_blank" href="https://nmichael.me">Nathan Michael</a> and working with <a target="_blank" href="https://rislab.org">RISLAB</a> in the <a target="_blank" href="https://ri.cmu.edu">Robotics Institute</a>.
+      Prior, I graduated with a double major in Computer Science (CS) and Electrical and Computer Engineering (ECE) from Cornell University, where I led the software team of <a target="_blank" href="https://cuauv.org">CUAUV</a>.
 
-Prior, I graduated with a double major in Computer Science (CS) and Electrical and Computer Engineering (ECE) from Cornell University, where I led the software team of <a target="_blank" href="https://cuauv.org">CUAUV</a>.
+      My work explores dynamical model learning for quadrotors to enable agile and accurate flight.
+      </p>
 
-My work explores dynamical model learning for quadrotors to enable agile and accurate flight.
-</p>
+      <p style="margin: 25px auto;">
+      Contact me at my last name (lowercase) at cmu dot edu.
+      </p>
+    </div>
 
-<p>
-Contact me at my last name (lowercase) at cmu dot edu.
-</p>
-
-<div>
-<a class="ext" target="_blank" href="https://github.com/alspitz">
-  <img src="images/github_logo.svg" style="width:32px;height:32px" alt="Alex Spitzer's GitHub"/>
-</a>
-<a class="ext" target="_blank" href="https://scholar.google.com/citations?user=1MrfrlgAAAAJ&hl=en">
-  <img src="images/scholar_logo.svg" style="width:32px;height:32px" alt="Alex Spitzer's Google Scholar"/>
-</a>
 </div>
-
-    </td>
-  </tr>
-</table>
-
-<h3 style="text-align: center; color: #ff9036;"> SITE UNDER CONSTRUCTION </h3>
-
-
-<h2> <a href="blog.html">Blog</a> </h2>
 
 <h2> <a href="quadsim.html">Quadrotor Simulation</a> </h2>
 
 <h2 id="papers"> Publications </h2>
 
-<p>
+<p class="paper">
   <a class="paper" href="roterrormetrics.html">
     Rotational Error Metrics for Quadrotor Control
   </a> <br>
@@ -77,7 +71,7 @@ Contact me at my last name (lowercase) at cmu dot edu.
   <a href="roterrormetrics.html">More</a>
 </p>
 
-<p>
+<p class="paper">
   <a class="paper" target="_blank" href="https://arxiv.org/abs/1905.13441">
     Inverting Learned Dynamics Models for Aggressive Multirotor Control
   </a> <br>
@@ -89,7 +83,7 @@ Contact me at my last name (lowercase) at cmu dot edu.
   <!--img class="paper" src="images/overlay_line.png"-->
 </p>
 
-<p>
+<p class="paper">
   <a class="paper" target="_blank" href="https://arxiv.org/abs/1905.13419">
     Fast and Agile Vision-Based Flight with Teleoperation and Collision Avoidance on a Multirotor
   </a> <br>
@@ -100,17 +94,24 @@ Contact me at my last name (lowercase) at cmu dot edu.
   <!--img class="paper" style="width:640px;" src="images/iser18.png"-->
 </p>
 
-<p>
+<p class="paper">
 <a class="paper" target="_blank" href="https://journals.sagepub.com/doi/full/10.1177/0278364918793717">Leveraging experience for robust, adaptive nonlinear MPC on computationally constrained systems with time-varying state uncertainty</a> <br>
   Vishnu R. Desaraju, <b>Alexander Spitzer</b>, Cormac O'Meadhra, Lauren Lieu, Nathan Michael <br>
   In <i>The International Journal of Robotics Research</i>, Vol. 37, Issue 13-14, 2018 <br>
 </p>
 
-<p>
+<p class="paper">
   <a class="paper" target="_blank" href="http://www.roboticsproceedings.org/rss13/p67.pdf">Experience-driven Predictive Control with Robust Constraint Satisfaction under Time-Varying State Uncertainty</a> <br>
   Vishnu R. Desaraju, <b>Alexander Spitzer</b>, Nathan Michael <br>
   Presented at <i>Robotics: Science and Systems (RSS) 2017</i> <br>
 </p>
+
+<!--<h2> <a href="commands.html">Useful Commands</a> </h2>-->
+
+<h2> <a href="blog.html">Blog</a> </h2>
+
+<!--<h2> <a href="mintime.html">Time Optimal Control</a> </h2>-->
+
 
 </body>
 </html>

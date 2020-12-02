@@ -1,6 +1,7 @@
 <head>
   <title>Rotational Error Metrics for Quadrotor Control</title>
   <link rel="stylesheet" type="text/css" href="main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0">
 </head>
 
 <div class="headerdiv" id="header"></div>
@@ -20,49 +21,37 @@ See <a href="quadsim.html">Quadrotor Simulation</a> for a sandbox where the simu
 
 <p> <b>Objective</b>: Translate 3 meters and turn 180 degrees in yaw simultaneously. Step inputs are provided to the controller in position and yaw. </p>
 
-<table>
-  <tr>
-    <td>
-      <h3> Continuous SO(3) - "Skew Symmetric" Control </h3>
-      <p style="text-align: center">
-      <video width="600" height="300" controls loop>
-        <source src="videos/cso3_posyaw.mp4" type="video/mp4">
-      </video>
-      </p>
-    </td>
-    <td>
-      <h3> Discontinuous SO(3) - "Quaternion" Control </h3>
-      <p style="text-align: center">
-      <video width="600" height="300" controls loop>
-        <source src="videos/dso3_posyaw.mp4" type="video/mp4">
-      </video>
-      </p>
-    </td>
-  </tr>
-</table>
+<div class="videos2">
+  <div class="videoitem">
+    <h3> Continuous SO(3) - "Skew Symmetric" Control </h3>
+    <video class="roterrorvideo" controls loop>
+      <source src="videos/cso3_posyaw.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="videoitem">
+    <h3> Discontinuous SO(3) - "Quaternion" Control </h3>
+    <video class="roterrorvideo" controls loop>
+      <source src="videos/dso3_posyaw.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
 
 <p>Note the significant sideways deviation for both controllers that use full SO(3) control.</p>
 
-<table>
-  <tr>
-    <td>
-      <h3> Reduced Attitude Control </h3>
-      <p style="text-align: center">
-      <video width="600" height="300" controls loop>
-        <source src="videos/red_posyaw.mp4" type="video/mp4">
-      </video>
-      </p>
-    </td>
-    <td>
-      <h3> Feedback Linearization </h3>
-      <p style="text-align: center">
-      <video width="600" height="300" controls loop>
-        <source src="videos/fblin_posyaw.mp4" type="video/mp4">
-      </video>
-      </p>
-    </td>
-  </tr>
-</table>
+<div class="videos2">
+  <div class="videoitem">
+    <h3> Reduced Attitude Control </h3>
+    <video class="roterrorvideo" controls loop>
+      <source src="videos/red_posyaw.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="videoitem">
+    <h3> Feedback Linearization </h3>
+    <video class="roterrorvideo" controls loop>
+      <source src="videos/fblin_posyaw.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
 
 <p> Reduced attitude control and feedback linearization follow much more linear paths to the goal position. </p>
 
@@ -70,49 +59,37 @@ See <a href="quadsim.html">Quadrotor Simulation</a> for a sandbox where the simu
 
 <p> <b>Objective</b>: Translate diagonally 3 meters along both the X and Y axes. A step input in position is provided to the controller. </p>
 
-<table>
-  <tr>
-    <td>
-      <h3> Continuous SO(3) - "Skew Symmetric" Control </h3>
-      <p style="text-align: center">
-      <video width="411" height="265" controls loop>
-        <source src="videos/cso3_diag.mp4" type="video/mp4">
-      </video>
-      </p>
-    </td>
-    <td>
-      <h3> Discontinuous SO(3) - "Quaternion" Control </h3>
-      <p style="text-align: center">
-      <video width="411" height="265" controls loop>
-        <source src="videos/dso3_diag.mp4" type="video/mp4">
-      </video>
-      </p>
-    </td>
-  </tr>
-</table>
+<div class="videos2">
+  <div class="videoitem">
+    <h3> Continuous SO(3) - "Skew Symmetric" Control </h3>
+    <video class="roterrorvideo" controls loop>
+      <source src="videos/cso3_diag.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="videoitem">
+    <h3> Discontinuous SO(3) - "Quaternion" Control </h3>
+    <video class="roterrorvideo" controls loop>
+      <source src="videos/dso3_diag.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
 
 <p>Note the significant deviation away from the straight-line diagonal path for both controllers that use full SO(3) control.</p>
 
-<table>
-  <tr>
-    <td>
-      <h3> Reduced Attitude Control </h3>
-      <p style="text-align: center">
-      <video width="411" height="265" controls loop>
-        <source src="videos/red_diag.mp4" type="video/mp4">
-      </video>
-      </p>
-    </td>
-    <td>
-      <h3> Feedback Linearization </h3>
-      <p style="text-align: center">
-      <video width="411" height="265" controls loop>
-        <source src="videos/fblin_diag.mp4" type="video/mp4">
-      </video>
-      </p>
-    </td>
-  </tr>
-</table>
+<div class="videos2">
+  <div class="videoitem">
+    <h3> Reduced Attitude Control </h3>
+    <video class="roterrorvideo" controls loop>
+      <source src="videos/red_diag.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="videoitem">
+    <h3> Feedback Linearization </h3>
+    <video class="roterrorvideo" controls loop>
+      <source src="videos/fblin_diag.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
 
 <p> Reduced attitude control and feedback linearization again follow much more linear paths to the goal position. </p>
 
