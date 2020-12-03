@@ -52,8 +52,15 @@ export function rot_from_z_yaw_zyx(z, yaw) {
 
   let y_c = new THREE.Vector3(-Math.sin(yaw), Math.cos(yaw), 0.0);
   let x_b = new THREE.Vector3();
-  x_b.crossVectors(y_c, z);
-  x_b.normalize();
+
+  if (Math.abs(y_c.dot(z)) > 1 - 1e-9) {
+    x_b.set(1, 0, 0);
+  }
+  else {
+    x_b.crossVectors(y_c, z);
+    x_b.normalize();
+  }
+
   let y_b = new THREE.Vector3();
   y_b.crossVectors(z, x_b);
 

@@ -24,7 +24,10 @@ export function attcontrol_so3_discon(rot, rotdes) {
   let ReT = Re.clone();
   ReT.transpose();
   let ret = vee(submat4(Re, ReT));
-  let fact = 1.0 / Math.sqrt(1 + trace(Re));
+  let fact = 10000;
+  if (trace(Re) > -1 + 1e-7) {
+    fact = 1.0 / Math.sqrt(1 + trace(Re));
+  }
   ret.multiplyScalar(fact);
   return ret;
 }
