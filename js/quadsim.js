@@ -108,7 +108,7 @@ function create_settings() {
     return;
   }
 
-  settingsdiv.innerHTML += "<table>";
+  let newhtml = "";
 
   for (let i = 0; i < settings_meta.length; i++) {
     let name = settings_meta[i][0];
@@ -122,13 +122,12 @@ function create_settings() {
     let step = (maxval - minval) / 20;
 
     let entryid = getsettingid(i);
-    settingsdiv.innerHTML += "<tr><td>" + name + "</td><td><br>";
-    settingsdiv.innerHTML += `<input type="range" min="${minval}" max="${maxval}" step="${step}" id="range${entryid}"/>`;
-    settingsdiv.innerHTML += `<input type="text" style="text-align: right; width: 2.5em" id="${entryid}"/>`;
-    settingsdiv.innerHTML += "</td></tr><br>";
+    newhtml += name + "<br>"
+    newhtml += `<div style="display: inline; justify-content: center"><input type="range" class="settingslider" min="${minval}" max="${maxval}" step="${step}" id="range${entryid}"/>`;
+    newhtml += `<input type="text" style="text-align: right; width: 2.5em" id="${entryid}"/></div>`;
   }
 
-  settingsdiv.innerHTML += "</table>";
+  settingsdiv.innerHTML += newhtml;
 }
 
 function set_default_settings() {

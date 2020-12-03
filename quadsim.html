@@ -14,8 +14,7 @@
     <script type="module" src="js/quadsim.js"></script>
 
     <div class="overlay" id="title">Quadrotor Simulation</div>
-    <div class="overlay" id="info1">WASD and Arrow Keys to fly around</div>
-    <div class="overlay" id="info2">Left click to pan, right click to set a goal</div>
+    <div class="overlay-inst">WASD and arrow keys to fly around, left click to pan, right click to set a goal</div>
 
     <div class="simdiv" id="mainsim">
       <div class="simdiv" id="simcell">
@@ -25,8 +24,8 @@
         <div class="simdiv" class="overlay" id="info"></div>
       </div>
 
-      <div class="simdiv" style="text-align: center">
-        <h2> Attitude Control </h2>
+      <div class="simdiv" id="simcellsettings" style="text-align: center">
+        <h2 style="margin-top: 0;"> Attitude Control </h2>
 
         <select id="controltype">
           <option value="cso3">Continuous SO(3)</option>
@@ -43,16 +42,23 @@
 
         <h2> Settings </h2>
           <h3> Camera </h3>
-          <button type="button" class="testbut" id="resetcambut">Default View</button>
-          <button type="button" class="testbut" id="sidecambut">Side View</button>
-          <button type="button" class="testbut" id="diagcambut">Diagonal View</button>
-          <button type="button" class="testbut" id="topcambut">Top Ortho View</button>
-          <button type="button" class="testbut" id="sidecamorthobut">Side Ortho View</button>
+          <button type="button" class="cambut" id="resetcambut">Default Cam</button>
+
+          <div>
+            <div style="display: flex">
+              <button type="button" class="cambut" id="sidecambut">Side</button>
+              <button type="button" class="cambut" id="diagcambut">Diagonal</button>
+            </div>
+            <div style="display: flex">
+              <button type="button" class="cambut" id="topcambut">Top Ortho</button>
+              <button type="button" class="cambut" id="sidecamorthobut">Side Ortho</button>
+            </div>
+          </div>
           Follow Drone <input type="checkbox" id="followbox"/>
           <h3> Control </h3>
           <div id="settingsdiv"></div>
           <br>
-          <button type="button" class="testbut" id="resetdefbut">Reset Defaults</button>
+          <button type="button" class="testbut" id="resetdefbut">Reset to Defaults</button>
       </div>
     </div>
   </body>
