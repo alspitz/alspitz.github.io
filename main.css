@@ -34,10 +34,6 @@ p.paper {
   margin: 25px auto;
 }
 
-/*a {
-  color: #304ffe;
-}*/
-
 h1 {
   font-size: 38px;
 }
@@ -48,15 +44,8 @@ h1 {
   text-decoration: none;
 }
 
-h1, h2, h3, h4 {
-  text-align: left;
-}
-
 h2 {
   font-size: 28px;
-}
-
-h2 {
   margin: 15px auto;
 }
 
@@ -167,9 +156,6 @@ a.paper {
 #mainsim {
   display: flex;
   justify-content: center;
-  /*align-items: top;
-  justify-items: top;
-  grid-template-columns: 1fr 100px;*/
 }
 
 #simcell {
@@ -260,7 +246,7 @@ a.paper {
 
 @media (max-width: 1280px) {
   div, h1, h2, h3, h4, p, li {
-    max-width: 94vw;
+    max-width: min(94vw, 640px);
   }
   .videos2 {
     max-width: 94vw;
