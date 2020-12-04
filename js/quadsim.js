@@ -44,7 +44,12 @@ const e2 = new THREE.Vector3(0, 1, 0);
 const e3 = new THREE.Vector3(0, 0, 1);
 
 var gravity;
-var dt;
+const dt = 0.02;
+
+// Desired position cannot go beyond this.
+const fence_size = 5.0;
+// Will be reset if past this and Return to Origin pressed.
+const bound_size = 10.0;
 
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
@@ -91,11 +96,11 @@ const settings_meta = [
   ["ang. vel. gain", 25.0, angvelgainset, "", 0, 100],
   ["yaw gain", 30.0, yawgainset, "", 0, 100],
   ["yaw vel. gain", 10.0, yawvelgainset, "", 0, 50],
-  ["horiz. move distance", 1.0, defset, "move_amount", 0.05, 5],
-  ["vert. move distance", 0.5, defset, "upmove_amount", 0.05, 5],
+  ["horiz. move distance", 1.0, defset, "move_amount", 0.05, fence_size],
+  ["vert. move distance", 0.5, defset, "upmove_amount", 0.05, fence_size],
   ["turn amount", Math.PI / 4.0, defset, "turn_amount", 0.01, Math.PI],
-  ["pos yaw step size", 3.0, defset, "posyaw_step_size", 1, 5],
-  ["diag step size", 4.0, defset, "diag_step_size", 1, 5],
+  ["pos yaw step size", 3.0, defset, "posyaw_step_size", 1, fence_size],
+  ["diag step size", 4.0, defset, "diag_step_size", 1, fence_size],
 ];
 
 function getsettingid(i) {
@@ -182,7 +187,7 @@ function destohome() {
 }
 
 function return_to_origin_but() {
-  if (is_blown_up()) {
+  if (is_blown_up() || out_of_bounds()) {
     reset_to_home();
   }
   else {
@@ -230,7 +235,16 @@ function is_blown_up() {
     isNaN(ang.x) ||
     isNaN(ang.y) ||
     isNaN(ang.z) ||
-    fblin_isnan());
+    fblin_isnan()
+  );
+}
+
+function out_of_bounds() {
+  return (
+    Math.abs(pos.x) > bound_size ||
+    Math.abs(pos.y) > bound_size ||
+    Math.abs(pos.z) > bound_size
+  );
 }
 
 function reset_to_home() {
@@ -374,9 +388,9 @@ function changeControl() {
 }
 
 function setposdes(vec) {
-  vec.x = Math.min(5, Math.max(-5, vec.x));
-  vec.y = Math.min(5, Math.max(-5, vec.y));
-  vec.z = Math.min(5, Math.max(-5, vec.z));
+  vec.x = Math.min(fence_size, Math.max(-fence_size, vec.x));
+  vec.y = Math.min(fence_size, Math.max(-fence_size, vec.y));
+  vec.z = Math.min(fence_size, Math.max(-fence_size, vec.z));
 
   posdes = vec;
   if (goal_marker) {
@@ -444,9 +458,6 @@ function init() {
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
 
-  //renderer.setSize(width, height);
-  //document.getElementById('sim').appendChild(canvas);
-
   resetcam();
 
   scene = new THREE.Scene();
@@ -504,7 +515,6 @@ function init() {
 
 function initsim() {
   gravity = new THREE.Vector3(0, 0, -gmag);
-  dt = 0.02;
 
   pos = new THREE.Vector3();
   vel = new THREE.Vector3();
@@ -617,6 +627,11 @@ function sim(u, angacc) {
   if (u < 0) {
     u = 0;
   }
+  if (u > 100) {
+    u = 100;
+  }
+
+  angacc.clampScalar(-5000, 5000);
 
   let acc = new THREE.Vector3();
 
