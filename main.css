@@ -140,6 +140,8 @@ a.paper {
 }
 
 .overlay {
+  margin-top: 0;
+  margin-bottom: 0;
   text-align: center;
   /*position: absolute;
   top: 120px;
