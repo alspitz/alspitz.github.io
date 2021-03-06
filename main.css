@@ -9,11 +9,11 @@ body {
   font-family: liberation sans;
 }
 
-div, h1, h2, h3, h4, p, li {
+div, h1, h2, h3, h4, p, li, pre {
   max-width: 50vw;
 }
 
-div {
+div, pre {
   margin: auto;
 }
 
@@ -246,8 +246,21 @@ a.paper {
   height: auto;
 }
 
+pre code {
+  white-space: pre-wrap;
+  border: 1px solid #bbccdd;
+  display: block;
+  padding: 10px;
+}
+
+code {
+  background-color: #ebf1f5;
+  font-family: monospace;
+  padding: 0 0.2em;
+}
+
 @media (max-width: 1280px) {
-  div, h1, h2, h3, h4, p, li {
+  div, h1, h2, h3, h4, p, li, pre {
     max-width: min(94vw, 640px);
   }
   .videos2 {

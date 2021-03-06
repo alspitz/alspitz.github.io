@@ -11,9 +11,69 @@
 Welcome to my blog. Built with HTML in Pittsburgh, PA.
 </p>
 
+<h2> How to set up network interface bonding with netctl / Archlinux </h2>
+
+<p style="text-align: center"> 2021-03-06 </p> <br>
+
+<p>
+Bonding is a useful type of Linux network interface that allows two or more network interfaces to be used for the same LAN. One use case is when a wired and wireless connection are both used and the wired connection should be preferred if the Ethernet cable is connected. This allows seamless switching between using the wired and wireless connection as the cable is plugged and unplugged.
+</p> <br>
+
+<p>
+Below are the netctl configuration files I use.
+The bond mode should be set to <code>active-backup</code>.
+Note that the IP configuration is set in the bond configuration file, and not in the individual interface configurations.
+There is no configuration file for the ethernet interface because all that's needed to be done is for the interface to be brought up. netctl will bring up all interfaces listed in <code>BindsToInterfaces</code> when the bond configuration is started.
+</p> <br>
+
+<p>
+Be sure to change the interface names <code>eth0</code> and <code>wlan0</code> to match yours, and set the IP and wireless security settings appropriately.
+</p> <br>
+
+<p><code>/etc/netctl/bond</code>:</p>
+<pre><code>Description='Ethernet primary with wifi backup'
+Interface=bond0
+Connection=bond
+BindsToInterfaces=(eth0 wlan0)
+IP=static
+IP6=no
+Address='192.168.0.XXX/24'
+Gateway='192.168.0.1'
+DNS='192.168.0.1'
+Mode=active-backup
+LinkOptions='miimon 100 primary eth0 updelay 100 downdelay 100'</code>
+</pre>
+
+<p><code>/etc/netctl/wifi_bond</code>:</p>
+<pre>
+<code>Description='Wifi for bonding: no IP'
+Interface=wlan0
+Connection=wireless
+Security=wpa
+ForceConnect=yes
+IP=no
+IP6=no
+ESSID='WIFI_SSID'
+Key=XXXXXXXXXX
+</code>
+</pre>
+
+<p>
+<code>ForceConnect=yes</code> ensures the wifi configuration will not fail to start if the bond configuration has already brought it up.
+</p> <br>
+
+<p>
+To use this configuration, run
+</p>
+<pre><code># netctl start bond &amp&amp netctl start wifi_bond</code></pre> <br>
+
+<p>
+For a thorough read on bonding, see <a target="_blank" href="https://www.kernel.org/doc/Documentation/networking/bonding.txt">https://www.kernel.org/doc/Documentation/networking/bonding.txt</a>
+</p>
+
 <h2> How to use import statement inside of an eval in a ROS roslaunch file </h2>
 
-<p> 2021-02-05 </p> <br>
+<p style="text-align: center"> 2021-02-05 </p> <br>
 
 <p>
 Since ROS Kinetic (Ubuntu 16.04), roslaunch allows you to eval arbitrary Python expressions.
