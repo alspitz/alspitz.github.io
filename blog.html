@@ -16,7 +16,7 @@ Welcome to my blog. Built with HTML in Pittsburgh, PA.
 <p style="text-align: center"> 2021-03-06 </p> <br>
 
 <p>
-Bonding is a useful type of Linux network interface that allows two or more network interfaces to be used for the same LAN. One use case is when a wired and wireless connection are both used and the wired connection should be preferred if the Ethernet cable is connected. This allows seamless switching between using the wired and wireless connection as the cable is plugged and unplugged.
+Bonding is a useful type of Linux network interface that allows two or more network interfaces to be used for the same LAN. One use case is when a wired and wireless connection are both used and the wired connection should be preferred if the Ethernet cable is connected. Bonding allows seamless switching between using the wired and wireless connection as the cable is plugged and unplugged.
 </p> <br>
 
 <p>
@@ -44,6 +44,10 @@ Mode=active-backup
 LinkOptions='miimon 100 primary eth0 updelay 100 downdelay 100'</code>
 </pre>
 
+<p>
+<code>primary eth0</code> indicates that the <code>eth0</code> interface should be used if both are connected, while <code>miimon</code>, <code>updelay</code>, and <code>downdelay</code> specify the time in milliseconds to wait before checking for link connectivity and switching between interfaces.
+</p> <br>
+
 <p><code>/etc/netctl/wifi_bond</code>:</p>
 <pre>
 <code>Description='Wifi for bonding: no IP'
@@ -68,7 +72,7 @@ To use this configuration, run
 <pre><code># netctl start bond &amp&amp netctl start wifi_bond</code></pre> <br>
 
 <p>
-For a thorough read on bonding, see <a target="_blank" href="https://www.kernel.org/doc/Documentation/networking/bonding.txt">https://www.kernel.org/doc/Documentation/networking/bonding.txt</a>
+For a thorough read on bonding, and an explanation of all options, see <a target="_blank" href="https://www.kernel.org/doc/Documentation/networking/bonding.txt">https://www.kernel.org/doc/Documentation/networking/bonding.txt</a>.
 </p>
 
 <h2> How to use import statement inside of an eval in a ROS roslaunch file </h2>
