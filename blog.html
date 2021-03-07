@@ -74,6 +74,12 @@ To use this configuration, run
 <pre><code># netctl start bond &amp;&amp; netctl start wifi_bond</code></pre> <br>
 
 <p>
+It's very important that the bond configuration is started before the wifi configuration, since an interface cannot be enslaved if it is "UP".
+If the wifi configuration is started first, the bond configuration will silently fail to enslave it and the wifi interface will not be used in the bond.
+A more sophisticated network manager than netctl can likely provide a better way to handle this.
+</p> <br>
+
+<p>
 For a thorough read on bonding, and an explanation of all options, see <a target="_blank" href="https://www.kernel.org/doc/Documentation/networking/bonding.txt">https://www.kernel.org/doc/Documentation/networking/bonding.txt</a>.
 </p> <br>
 
@@ -116,7 +122,7 @@ Something I've always wanted to do is to check for the existence of a file. Howe
 
 <hr>
 
-<h2> How to wire Pixracer Serial to TX2 J121 UART 2 </h2>
+<h2> How to wire Pixracer serial to TX2 J121 UART 2 </h2>
 
 <p>
 If pin 1 is the GND pin for both the Molex Pico (plugging into J7) and the JST GH (plugging into a UART on the Pixracer), then pin 2 on J7 connects to pin 5 on the JST GH and pin 3 on the J7 connects to pin 4 on the JST GH.
