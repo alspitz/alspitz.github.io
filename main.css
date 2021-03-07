@@ -23,6 +23,10 @@ h1, h2, h3, h4, li {
   margin: 25px auto;
 }
 
+li {
+  margin: auto;
+}
+
 p {
   color: #000000;
   text-align: left;
