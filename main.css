@@ -250,6 +250,10 @@ a.paper {
   height: auto;
 }
 
+span {
+  font-family: monospace;
+}
+
 pre code {
   white-space: pre-wrap;
   border: 1px solid #bbccdd;

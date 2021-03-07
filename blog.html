@@ -69,7 +69,7 @@ Key=XXXXXXXXXX
 <p>
 To use this configuration, run
 </p>
-<pre><code># netctl start bond &amp&amp netctl start wifi_bond</code></pre> <br>
+<pre><code># netctl start bond &amp;&amp; netctl start wifi_bond</code></pre> <br>
 
 <p>
 For a thorough read on bonding, and an explanation of all options, see <a target="_blank" href="https://www.kernel.org/doc/Documentation/networking/bonding.txt">https://www.kernel.org/doc/Documentation/networking/bonding.txt</a>.
@@ -105,7 +105,7 @@ Something I've always wanted to do is to check for the existence of a file. Howe
   We can get around this by nesting evals and creating the __import__ double underscore method using string addition.
 </p> <br>
 
-<!-- HTML generated using hilite.me --><div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:0;padding:.1em .1em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">&lt;arg</span> <span style="color: #bbbbbb">name=</span><span style="color: #ed9d13">&quot;configfile&quot;</span> <span style="color: #bbbbbb">default=</span><span style="color: #ed9d13">&quot;$(eval &#39;alternate.txt&#39; if eval(&#39;_&#39; + &#39;_import_&#39; + &#39;_(\&#39;os\&#39;)&#39;).path.exists(&#39;alternate.txt&#39;) else &#39;main.txt&#39;)&quot;</span><span style="color: #6ab825; font-weight: bold">/&gt;</span>
+<!-- HTML generated using hilite.me --><div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:0;padding:.1em .1em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">&lt;arg</span> <span style="color: #bbbbbb">name=</span><span style="color: #ed9d13">&quot;conffile&quot;</span> <span style="color: #bbbbbb">default=</span><span style="color: #ed9d13;">&quot;$(eval &#39;b.txt&#39; if eval(&#39;_&#39; + &#39;_import_&#39; + &#39;_(\&#39;os\&#39;)&#39;).path.exists(&#39;b.txt&#39;) else &#39;a.txt&#39;)&quot;</span><span style="color: #6ab825; font-weight: bold">/&gt;</span>
 </pre></div>
 
 <h2> How to wire Pixracer Serial to TX2 J121 UART 2 </h2>
@@ -115,5 +115,5 @@ If pin 1 is the GND pin for both the Molex Pico (plugging into J7) and the JST G
 </p>
 
 <p>
-To talk to this port from Linux, you may need to use <tt>/dev/ttyTHS1</tt> or <tt>/dev/ttyTHS3</tt>.
+To talk to this port from Linux, you may need to use <code>/dev/ttyTHS1</code> or <code>/dev/ttyTHS3</code>.
 </p>
