@@ -35,7 +35,6 @@ p {
   color: #000000;
   text-align: left;
   margin: auto;
-  font-size: 14px;
 }
 
 p.paper {
@@ -67,8 +66,12 @@ h4 {
   margin: 5px auto;
 }
 
-p, li {
+p, li, footer {
   font-size: 14px;
+}
+
+footer {
+  text-align: center;
 }
 
 #aboutme {
@@ -270,6 +273,10 @@ code {
 
 .blogtitle {
   margin-top: 40px;
+}
+
+.blogdate {
+  text-align: center;
 }
 
 @media (max-width: 1280px) {
