@@ -27,6 +27,10 @@ li {
   margin: auto;
 }
 
+a {
+  overflow-wrap: break-word;
+}
+
 p {
   color: #000000;
   text-align: left;
@@ -250,10 +254,6 @@ a.paper {
   height: auto;
 }
 
-span {
-  font-family: monospace;
-}
-
 pre code {
   white-space: pre-wrap;
   border: 1px solid #bbccdd;
@@ -265,6 +265,11 @@ code {
   background-color: #ebf1f5;
   font-family: monospace;
   padding: 0 0.2em;
+  overflow-wrap: break-word;
+}
+
+.blogtitle {
+  margin-top: 40px;
 }
 
 @media (max-width: 1280px) {

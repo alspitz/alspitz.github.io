@@ -13,7 +13,7 @@ Welcome to my blog. Built with HTML in Pittsburgh, PA.
 
 <hr>
 
-<h2> How to set up network interface bonding with netctl / Archlinux </h2>
+<h2 class="blogtitle"> How to set up network interface bonding with netctl / Archlinux </h2>
 
 <p style="text-align: center"> 2021-03-06 </p> <br>
 
@@ -93,7 +93,7 @@ For a thorough read on bonding, and an explanation of all options, see <a target
 
 <hr>
 
-<h2> How to use import statement inside of an eval in a ROS roslaunch file </h2>
+<h2 class="blogtitle"> How to use import statement inside of an eval in a ROS roslaunch file </h2>
 
 <p style="text-align: center"> 2021-02-05 </p> <br>
 
@@ -102,27 +102,26 @@ Since ROS Kinetic (Ubuntu 16.04), roslaunch allows you to eval arbitrary Python 
 </p> <br>
 
 <p>
-For example, you can do something like the below to manipulate parameters found in two different files.
+For example, you can do something like this to manipulate parameters found in two different files:
 </p><br>
 
-<!-- HTML generated using hilite.me --><div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:0;padding:.1em .1em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">&lt;arg</span> <span style="color: #bbbbbb">name=</span><span style="color: #ed9d13">&quot;parameter&quot;</span> <span style="color: #bbbbbb">default=</span><span style="color: #ed9d13">&quot;$(eval float(open(&#39;config1&#39;).read().strip()) + float(open(&#39;config2&#39;).read().strip()))&quot;</span><span style="color: #6ab825; font-weight: bold">/&gt;</span>
-</pre></div>
-<br>
+<pre><code>&lt;arg name=&quot;parameter&quot; default=&quot;$(eval float(open('config1').read().strip()) + float(open('config2').read().strip()))&quot;/&gt;
+</code></pre> <br>
 
 <p>
-Something I've always wanted to do is to check for the existence of a file. However, since the os module has not been imported in roslaunch's eval environment, this seems impossible to do. Furthermore, roslaunch explicitly forbids double underscores, precluding the use of an expression import with __import__. However, it does so by searching for "__"! See line 345 at <a target="_blank" href=http://docs.ros.org/en/melodic/api/roslaunch/html/roslaunch.substitution_args-pysrc.html>the roslaunch source</a>, which references <a target="_blank" href=https://nedbatchelder.com/blog/201206/eval_really_is_dangerous.html>https://nedbatchelder.com/blog/201206/eval_really_is_dangerous.html</a>
+Something I've always wanted to do is to check for the existence of a file. However, since the <code>os</code> module has not been imported in roslaunch's eval environment, this seems impossible to do.
+Furthermore, roslaunch explicitly forbids double underscores, precluding the use of an expression import with <code>__import__</code>.
+However, it does so by searching for <code>__</code>! See line 345 at <a target="_blank" href=http://docs.ros.org/en/melodic/api/roslaunch/html/roslaunch.substitution_args-pysrc.html>the roslaunch source</a>, which references <a target="_blank" href=https://nedbatchelder.com/blog/201206/eval_really_is_dangerous.html>https://nedbatchelder.com/blog/201206/eval_really_is_dangerous.html</a>.
 </p> <br>
 
 <p>
-  We can get around this by nesting evals and creating the __import__ double underscore method using string addition.
+  We can get around this by nesting evals and creating the <code>__import__</code> method using string addition of individual underscores.
 </p> <br>
 
-<!-- HTML generated using hilite.me --><div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:0;padding:.1em .1em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">&lt;arg</span> <span style="color: #bbbbbb">name=</span><span style="color: #ed9d13">&quot;conffile&quot;</span> <span style="color: #bbbbbb">default=</span><span style="color: #ed9d13;">&quot;$(eval &#39;b.txt&#39; if eval(&#39;_&#39; + &#39;_import_&#39; + &#39;_(\&#39;os\&#39;)&#39;).path.exists(&#39;b.txt&#39;) else &#39;a.txt&#39;)&quot;</span><span style="color: #6ab825; font-weight: bold">/&gt;</span>
-</pre></div>
-
+<pre><code>&lt;arg name="conf" default=&quot;$(eval 'b.txt' if eval('_' + '_import_' + '_(\'os\')').path.exists('b.txt') else 'a.txt')&quot;/&gt;</code></pre>
 <hr>
 
-<h2> How to wire Pixracer serial to TX2 J121 UART 2 </h2>
+<h2 class="blogtitle"> How to wire Pixracer serial to TX2 J121 UART 2 </h2>
 
 <p>
 If pin 1 is the GND pin for both the Molex Pico (plugging into J7) and the JST GH (plugging into a UART on the Pixracer), then pin 2 on J7 connects to pin 5 on the JST GH and pin 3 on the J7 connects to pin 4 on the JST GH.
