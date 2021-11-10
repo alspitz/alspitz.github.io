@@ -22,43 +22,44 @@
         <canvas id="sim"></canvas>
         <div class="simdiv" class="overlay" id="speed"></div>
         <div class="simdiv" class="overlay" id="info"></div>
+        <div class="simdiv" class="overlay" id="info2"></div>
       </div>
 
       <div class="simdiv" id="simcellsettings" style="text-align: center">
         <h2 style="margin-top: 0;"> Attitude Control </h2>
 
-        <select id="controltype">
-          <option value="cso3">Continuous SO(3)</option>
-          <option value="dso3">Discontinuous SO(3)</option>
-          <option value="redatt">Reduced Attitude</option>
-          <option value="fblin">Feedback Linearization</option>
+        <select id="controltype" title="Select the type of attitude controller. Mouse over each for a short description.">
+          <option value="cso3" title="Continuous error metric on SO(3). Strongest response at 90 degree error. Smooth but slow to respond at large angle errors. Does not always follow straight lines.">Continuous SO(3)</option>
+          <option value="dso3" title="Discontinuous error metric on SO(3). Strength of response is proportional to angle error. Does not always follow straight lines.">Discontinuous SO(3)</option>
+          <option value="redatt" title="Decomposes error into acceleration vector and yaw components. Always takes straight line path.">Reduced Attitude</option>
+          <option value="fblin" title="Completely linearizes the nonlinear dynamics leading to a theoretically perfect error response. Less robust.">Feedback Linearization</option>
         </select>
 
         <h2> Test Cases </h2>
-          <button type="button" class="testbut" id="homebut">Return to Origin</button>
-          <button type="button" class="testbut" id="step1">Quick Direction Change</button>
-          <button type="button" class="testbut" id="step2">Position Yaw Step</button>
-          <button type="button" class="testbut" id="step3">Diagonal Step</button>
+          <button type="button" class="testbut" id="homebut" title="Bring the quadrotor back to the center">Return to Origin</button>
+          <button type="button" class="testbut" id="step1" title="Quickly change direction (angle)">Quick Direction Change</button>
+          <button type="button" class="testbut" id="step2" title="Simultaneously change position and yaw by 180 degrees">Position Yaw Step</button>
+          <button type="button" class="testbut" id="step3" title="Simultaneously step in both the X and Y directions">Diagonal Step</button>
 
         <h2> Settings </h2>
           <h3> Camera </h3>
-          <button type="button" class="cambut" id="resetcambut">Default Cam</button>
+          <button type="button" class="cambut" id="resetcambut" title="Reset camera settings">Default Cam</button>
 
           <div>
             <div style="display: flex">
-              <button type="button" class="cambut" id="sidecambut">Side</button>
-              <button type="button" class="cambut" id="diagcambut">Diagonal</button>
+              <button type="button" class="cambut" id="sidecambut" title="View from the side; best for Position Yaw Step">Side</button>
+              <button type="button" class="cambut" id="diagcambut" title="Diagonal view; best for Diagonal Step">Diagonal</button>
             </div>
             <div style="display: flex">
-              <button type="button" class="cambut" id="topcambut">Top Ortho</button>
-              <button type="button" class="cambut" id="sidecamorthobut">Side Ortho</button>
+              <button type="button" class="cambut" id="topcambut" title="Top down orthographic view">Top Ortho</button>
+              <button type="button" class="cambut" id="sidecamorthobut" title="Sideways orthographic view">Side Ortho</button>
             </div>
           </div>
-          Follow Drone <input type="checkbox" id="followbox"/>
+          <div title="Camera orbits quadrotor">Follow Drone <input type="checkbox" id="followbox"/></div>
           <h3> Control </h3>
           <div id="settingsdiv"></div>
           <br>
-          <button type="button" class="testbut" id="resetdefbut">Reset to Defaults</button>
+          <button type="button" class="testbut" id="resetdefbut" title="Reset all control settings to their defaults">Reset to Defaults</button>
       </div>
     </div>
   </body>

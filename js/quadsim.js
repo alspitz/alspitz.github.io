@@ -15,6 +15,7 @@ var controls;
 
 const followbox = document.getElementById('followbox');
 const infoelem = document.getElementById("info");
+const info2elem = document.getElementById("info2");
 const speedelem = document.getElementById("speed");
 
 var model;
@@ -36,6 +37,8 @@ var yawdes = 0.0;
 var pos = new THREE.Vector3();
 var vel, ang;
 var rot;
+
+var accdistest = new THREE.Vector3(0, 0, 0);
 
 var att_type = 0;
 
@@ -87,21 +90,45 @@ function yawvelgainset(name, val) {
   K_ang.elements[8] = val;
 }
 
-var move_amount, upmove_amount, turn_amount, posyaw_step_size, diag_step_size;
+var wind_enabled;
+function windtoggle(elem) {
+  wind_enabled = elem.checked;
+}
+
+var accdistest_enabled;
+function windesttoggle(elem) {
+  accdistest_enabled = elem.checked;
+  if (!accdistest_enabled) {
+    info2elem.innerHTML = "";
+  }
+}
+
 const gmag = 9.81;
 const settings_meta = [
-  ["position gain", 7.0, posgainset, "", 0, 20],
-  ["velocity gain", 4.0, velgainset, "", 0, 20],
-  ["roll/pitch gain", 190.0, anggainset, "", 0, 400],
-  ["ang. vel. gain", 25.0, angvelgainset, "", 0, 100],
-  ["yaw gain", 30.0, yawgainset, "", 0, 100],
-  ["yaw vel. gain", 10.0, yawvelgainset, "", 0, 50],
-  ["horiz. move distance", 1.0, defset, "move_amount", 0.05, fence_size],
-  ["vert. move distance", 0.5, defset, "upmove_amount", 0.05, fence_size],
-  ["turn amount", Math.PI / 4.0, defset, "turn_amount", 0.01, Math.PI],
-  ["pos yaw step size", 3.0, defset, "posyaw_step_size", 1, fence_size],
-  ["diag step size", 4.0, defset, "diag_step_size", 1, fence_size],
+  ["wind direction (deg)", -90, defset, "wind_direction", -180, 180, "Direction wind is blowing towards"],
+  ["wind strength (m/s<sup>2</sup>)", 4.5, defset, "wind_strength", 0.1, 10.0, "Strength of wind, measured as the acceleration imparted on the quadrotor"],
+  ["wind variance", 2.0, defset, "wind_variance", 0.1, 20.0, "Variance in the acceleration applied by the wind, adds stochasticity."],
+  ["position gain", 7.0, posgainset, "", 0, 20, "Feedback gain on position"],
+  ["velocity gain", 4.0, velgainset, "", 0, 20, "Feedback gain on velocity"],
+  ["roll/pitch gain", 190.0, anggainset, "", 0, 400, "Feedback gain on quadrotor tilt"],
+  ["ang. vel. gain", 25.0, angvelgainset, "", 0, 100, "Feedback gain on angular velocity"],
+  ["yaw gain", 30.0, yawgainset, "", 0, 100, "Feedback gain on yaw angle"],
+  ["yaw vel. gain", 10.0, yawvelgainset, "", 0, 50, "Feedback gain on yaw velocity"],
+  ["horiz. move distance", 1.0, defset, "move_amount", 0.05, fence_size, "Amount to move (in meters) using WASD"],
+  ["vert. move distance", 0.5, defset, "upmove_amount", 0.05, fence_size, "Amount to move (in meters) vertically"],
+  ["turn amount", Math.PI / 4.0, defset, "turn_amount", 0.01, Math.PI, "Amount to turn by (in radians) using arrow keys"],
+  ["pos yaw step size", 3.0, defset, "posyaw_step_size", 1, fence_size, "Size of step (in meters) for the Position Yaw Step test case"],
+  ["diag step size", 4.0, defset, "diag_step_size", 1, fence_size, "Size of step (in meters) for the Diagonal Step test case"],
 ];
+
+const toggles = [
+  ["Wind", false, windtoggle, "Enables a constant noisy acceleration disturbance from a fixed direction, simulating wind."],
+  ["Acc. Dist. Est.", false, windesttoggle, "Enables linear acceleration disturbance estimation, i.e. a form of adaptive control."]
+];
+
+function gettoggleid(i) {
+  return "toggle" + i;
+}
 
 function getsettingid(i) {
   return "setting" + i;
@@ -113,7 +140,15 @@ function create_settings() {
     return;
   }
 
-  let newhtml = "";
+  let newhtml = "<div>";
+
+  for (let i = 0; i < toggles.length; i++) {
+    let name = toggles[i][0];
+    let text = toggles[i][3];
+    newhtml += `<div title="${text}">${name} <input type="checkbox" id="${gettoggleid(i)}"/></div>`;
+  }
+
+  newhtml += "</div><br>"
 
   for (let i = 0; i < settings_meta.length; i++) {
     let name = settings_meta[i][0];
@@ -121,21 +156,38 @@ function create_settings() {
     let f_set = settings_meta[i][2];
     let varname = settings_meta[i][3];
 
+    if (varname) {
+      // window.eval to declare the settings vars globally.
+      window.eval(`var ${varname}`);
+    }
+
     let minval = settings_meta[i][4];
     let maxval = settings_meta[i][5];
+    let text = settings_meta[i][6];
 
     let step = (maxval - minval) / 20;
 
     let entryid = getsettingid(i);
-    newhtml += name + "<br>"
+    newhtml += `<div title="${text}">` + name + "<br>"
     newhtml += `<div style="display: inline; justify-content: center"><input type="range" class="settingslider" min="${minval}" max="${maxval}" step="${step}" id="range${entryid}"/>`;
-    newhtml += `<input type="text" style="text-align: right; width: 2.5em" id="${entryid}"/></div>`;
+    newhtml += `<input type="text" style="text-align: right; width: 2.5em" id="${entryid}"/></div></div>`;
   }
 
   settingsdiv.innerHTML += newhtml;
 }
 
 function set_default_settings() {
+  for (let i = 0; i < toggles.length; i++) {
+    let defval = toggles[i][1];
+    let onchangef = toggles[i][2];
+    let elem = document.getElementById(gettoggleid(i));
+    if (elem) {
+      elem.onchange = function() { onchangef(elem); };
+      elem.checked = defval;
+    }
+    onchangef(defval);
+  }
+
   for (let i = 0; i < settings_meta.length; i++) {
     let defval = settings_meta[i][1];
     let f_set = settings_meta[i][2];
@@ -526,6 +578,42 @@ function initsim() {
   setposdes(startpos);
 }
 
+function windacc() {
+  let dirrads = Math.PI * wind_direction / 180;
+  let winddir = new THREE.Vector3(Math.cos(dirrads), Math.sin(dirrads), 0);
+
+  let wacc = new THREE.Vector3();
+  wacc.copy(winddir)
+  wacc.multiplyScalar(wind_strength + (2 * wind_variance * (Math.random() - 0.5)));
+  return wacc;
+}
+
+var last_vel = new THREE.Vector3(0, 0, 0);
+function distest(vel, acc_pred) {
+  if (last_vel) {
+    let accerr = new THREE.Vector3();
+    accerr.copy(vel);
+    accerr.sub(last_vel);
+    last_vel.copy(vel);
+    accerr.multiplyScalar(dt);
+
+    accerr.sub(acc_pred);
+
+    let alpha = 0.992;
+
+    accerr.multiplyScalar(1 - alpha);
+
+    accdistest.multiplyScalar(alpha);
+    accdistest.add(accerr);
+  }
+}
+
+function display_accdistest() {
+  if (info2elem && accdistest_enabled) {
+    info2elem.innerHTML = `Acceleration Disturbance Estimate: (${accdistest.x.toFixed(2)}, ${accdistest.y.toFixed(2)}, ${accdistest.z.toFixed(2)})`;
+  }
+}
+
 let fblin_u;
 let fblin_udot;
 
@@ -550,6 +638,9 @@ function fblin(posdes, yawdes, pos, vel, rot, ang) {
   k2.multiplyScalar(K_rot.elements[0]);
 
   let snap_ff = pos.clone().sub(posdes).applyMatrix3(k1).add(vel.clone().applyMatrix3(k2));
+  if (accdistest_enabled) {
+    snap_ff.add(accdistest.clone().multiplyScalar(K_rot.elements[0]));
+  }
   snap_ff.multiplyScalar(-1);
 
   let rotinv = rot.clone();
@@ -572,6 +663,15 @@ function fblin(posdes, yawdes, pos, vel, rot, ang) {
   fblin_u += udot * dt;
   fblin_udot += uddot * dt;
 
+  // Estimate linear acceleration disturbance.
+  if (accdistest_enabled) {
+    let accpred = e3.clone();
+    accpred.applyMatrix4(rot);
+    accpred.multiplyScalar(fblin_u);
+    accpred.add(gravity)
+    distest(vel, accpred);
+  }
+
   // TODO, Use actual FBLin yaw controller.
   let euler = new THREE.Euler();
   euler.setFromRotationMatrix(rot);
@@ -580,6 +680,7 @@ function fblin(posdes, yawdes, pos, vel, rot, ang) {
   if (infoelem) {
     infoelem.innerHTML = `Thrust: ${u.toFixed(2)}. Thrust Vel: ${udot.toFixed(2)}. Thrust Acc: ${uddot.toFixed(2)}. Ang acc: ${aa.x.toFixed(2)}, ${aa.y.toFixed(2)}, ${aa.z.toFixed(2)}`;
   }
+  display_accdistest();
 
   return [fblin_u, aa];
 }
@@ -589,6 +690,9 @@ function control(posdes, yawdes, pos, vel, rot, ang) {
   let accel_des = pos.clone().sub(posdes).applyMatrix3(K_pos).add(vel.clone().applyMatrix3(K_vel));
   accel_des.multiplyScalar(-1);
   accel_des.sub(gravity);
+  if (accdistest_enabled) {
+    accel_des.sub(accdistest);
+  }
 
   let zax = e3.clone();
   zax.applyMatrix4(rot);
@@ -598,6 +702,15 @@ function control(posdes, yawdes, pos, vel, rot, ang) {
   let zdes = accel_des.normalize();
 
   let rotdes = rot_from_z_yaw_zyx(zdes, yawdes);
+
+  // Estimate linear acceleration disturbance.
+  if (accdistest_enabled) {
+    let accpred = new THREE.Vector3();
+    accpred.copy(zax);
+    accpred.multiplyScalar(u);
+    accpred.add(gravity)
+    distest(vel, accpred);
+  }
 
   // Attitude Control
   let eR;
@@ -619,6 +732,7 @@ function control(posdes, yawdes, pos, vel, rot, ang) {
   if (infoelem) {
     infoelem.innerHTML = `Desired accel: (${accel_des.x.toFixed(2)}, ${accel_des.y.toFixed(2)}, ${accel_des.z.toFixed(2)}). Thrust: ${u.toFixed(2)}. Ang acc: ${eR.x.toFixed(2)}, ${eR.y.toFixed(2)}, ${eR.z.toFixed(2)}`;
   }
+  display_accdistest();
 
   return [u, eR];
 }
@@ -643,6 +757,9 @@ function sim(u, angacc) {
   acc.copy(zax)
   acc.multiplyScalar(u);
   acc.add(gravity);
+  if (wind_enabled) {
+    acc.add(windacc());
+  }
 
   let scaled_vel = new THREE.Vector3();
   scaled_vel.copy(vel);
