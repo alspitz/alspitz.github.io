@@ -35,6 +35,8 @@ p {
   color: #000000;
   text-align: left;
   margin: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 p.paper {
