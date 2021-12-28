@@ -11,8 +11,6 @@
 Hopefully useful pieces of information or insight.
 </p>
 
-<hr>
-
 <h2 class="blogtitle"> How to set up network interface bonding with netctl / Archlinux </h2>
 
 <p class="blogdate"> 2021-03-06 </p>
@@ -88,8 +86,6 @@ For a thorough read on bonding, and an explanation of all options, see <a target
 
 <p> Happy bonding! </p>
 
-<hr>
-
 <h2 class="blogtitle"> How to use import statement inside of an eval in a ROS roslaunch file </h2>
 
 <p class="blogdate"> 2021-02-05 </p>
@@ -116,7 +112,19 @@ However, it does so by searching for <code>__</code>! See line 345 at <a target=
 </p>
 
 <pre><code>&lt;arg name="conf" default=&quot;$(eval 'b.txt' if eval('_' + '_import_' + '_(\'os\')').path.exists('b.txt') else 'a.txt')&quot;/&gt;</code></pre>
-<hr>
+
+<p>
+Now, the argument named <code>conf</code> will have the value <code>b.txt</code> if a file named <code>b.txt</code> exists in the filesystem and <code>a.txt</code> otherwise. This may be useful when you wish to use an alternative configuration file if it exists, but fall back to a default configuration file if it doesn't.
+</p>
+
+<p>
+While this certainly looks messy, you can break more complicated expressions into sub arguments. Below is an example from a launch file I use.
+
+<pre><code>&lt;arg name=&quot;imp&quot; default=&quot;eval('_' + '_import_' + '_')&quot;/&gt;
+&lt;arg name=&quot;fn&quot;  default=&quot;find('vehicle_configs') + '/' + vehicle + '/' + arg('controlconfig_name') + '.yaml'&quot;/&gt;
+&lt;arg name=&quot;ldc&quot; default=&quot;eval(arg('imp') + '(\'yaml\')').safe_load(open(eval(arg('fn'))))&quot;/&gt;
+&lt;arg name=&quot;ex&quot;  default=&quot;eval(arg('imp') + '(\'os\')').path.exists(eval(arg('fn')))&quot;/&gt;
+&lt;arg name=&quot;controller_type&quot; default=&quot;$(eval eval(arg('ldc')).get('controller', arg('default_controller_type')) if eval(arg('ex')) else arg('default_controller_type'))&quot;/&gt;</code></pre>
 
 <h2 class="blogtitle"> How to wire Pixracer serial to TX2 J121 UART 2 </h2>
 
