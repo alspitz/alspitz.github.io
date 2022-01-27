@@ -259,10 +259,10 @@ a.paper {
 }
 
 pre code {
-  white-space: pre-wrap;
   border: 1px solid #bbccdd;
   display: block;
   padding: 7px 10px;
+  overflow-x: auto;
 }
 
 code {
