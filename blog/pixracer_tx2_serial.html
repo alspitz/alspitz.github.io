@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<title>How to wire Pixracer serial to TX2 J121 UART 2</title>
+<link rel="icon" type="image/png" href="/images/profile-square-tiny.png">
+<link rel="stylesheet" href="/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0">
+
+<div class="headerdiv" id="header">
+  <div class="headerdivinner">
+    <a class="headerlink" href="/">Home</a>
+    <a class="headerlink" href="/blog.html">Blog</a>
+    <a class="headerlink" href="/quadsim.html">Simulation</a>
+    <a class="headerlink" href="/#papers">Papers</a>
+  </div>
+</div>
+
+<h2 class="blogtitle"> How to wire Pixracer serial to TX2 J121 UART 2 </h2>
+
+<p class="blogdate"> 2019-??-??
+
+<p>
+If pin 1 is the GND pin for both the Molex Pico (plugging into J7) and the JST GH (plugging into a UART on the Pixracer), then pin 2 on J7 connects to pin 5 on the JST GH and pin 3 on the J7 connects to pin 4 on the JST GH.
+
+<p>
+To talk to this port from Linux, you may need to use <code>/dev/ttyTHS1</code> or <code>/dev/ttyTHS3</code>.
+
+<hr>
+<footer>&#169; 2022 Alex Spitzer</footer>

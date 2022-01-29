@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<title>How to use import statement inside of an eval in a ROS roslaunch file</title>
+<link rel="icon" type="image/png" href="/images/profile-square-tiny.png">
+<link rel="stylesheet" href="/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0">
+
+<div class="headerdiv" id="header">
+  <div class="headerdivinner">
+    <a class="headerlink" href="/">Home</a>
+    <a class="headerlink" href="/blog.html">Blog</a>
+    <a class="headerlink" href="/quadsim.html">Simulation</a>
+    <a class="headerlink" href="/#papers">Papers</a>
+  </div>
+</div>
+
+<h2 class="blogtitle"> How to use import statement inside of an eval in a ROS roslaunch file </h2>
+
+<p class="blogdate"> 2021-02-05
+
+<p>
+Since ROS Kinetic (Ubuntu 16.04), roslaunch allows you to eval arbitrary Python expressions.
+
+<p>
+For example, you can do something like this to manipulate parameters found in two different files:
+
+<pre><code>&lt;arg name=&quot;parameter&quot; default=&quot;$(eval float(open('config1').read().strip()) + float(open('config2').read().strip()))&quot;/&gt;
+</code></pre>
+
+<p>
+Something I've always wanted to do is to check for the existence of a file. However, since the <code>os</code> module has not been imported in roslaunch's eval environment, this seems impossible to do.
+Furthermore, roslaunch explicitly forbids double underscores, precluding the use of an expression import with <code>__import__</code>.
+However, it does so by searching for <code>__</code>! See line 345 at <a target="_blank" href=http://docs.ros.org/en/melodic/api/roslaunch/html/roslaunch.substitution_args-pysrc.html>the roslaunch source</a>, which references <a target="_blank" href=https://nedbatchelder.com/blog/201206/eval_really_is_dangerous.html>https://nedbatchelder.com/blog/201206/eval_really_is_dangerous.html</a>.
+
+<p>
+  We can get around this by nesting evals and creating the <code>__import__</code> method using string addition of individual underscores.
+
+<pre><code>&lt;arg name="conf" default=&quot;$(eval 'b.txt' if eval('_' + '_import_' + '_(\'os\')').path.exists('b.txt') else 'a.txt')&quot;/&gt;</code></pre>
+
+<p>
+Now, the argument named <code>conf</code> will have the value <code>b.txt</code> if a file named <code>b.txt</code> exists in the filesystem and <code>a.txt</code> otherwise. This may be useful when you wish to use an alternative configuration file if it exists, but fall back to a default configuration file if it doesn't.
+
+<p>
+While this certainly looks messy, you can break more complicated expressions into sub arguments. Below is an example from a launch file I use.
+
+<pre><code>&lt;arg name=&quot;imp&quot; default=&quot;eval('_' + '_import_' + '_')&quot;/&gt;
+&lt;arg name=&quot;fn&quot;  default=&quot;find('vehicle_configs') + '/' + vehicle + '/' + arg('controlconfig_name') + '.yaml'&quot;/&gt;
+&lt;arg name=&quot;ldc&quot; default=&quot;eval(arg('imp') + '(\'yaml\')').safe_load(open(eval(arg('fn'))))&quot;/&gt;
+&lt;arg name=&quot;ex&quot;  default=&quot;eval(arg('imp') + '(\'os\')').path.exists(eval(arg('fn')))&quot;/&gt;
+&lt;arg name=&quot;controller_type&quot; default=&quot;$(eval eval(arg('ldc')).get('controller', arg('default_controller_type')) if eval(arg('ex')) else arg('default_controller_type'))&quot;/&gt;</code></pre>
+
+<hr>
+<footer>&#169; 2022 Alex Spitzer</footer>
