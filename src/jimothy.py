@@ -42,6 +42,14 @@ def cmd_for(src_path, cmd, context):
 
   return text.strip()
 
+def cmd_headerlink_class(src_path, cmd, context):
+  rest = cmd.removeprefix("headerlink-class").strip()
+  cls = "headerlink"
+  if rest and rest in context['filename'].stem:
+    cls += " headerlinkcurrent"
+
+  return cls
+
 def make_blogs(src_path, out_path, blogs):
   for blog in blogs:
     blogfn = "%s.html" % blog.srcfn
@@ -51,6 +59,7 @@ def make_blogs(src_path, out_path, blogs):
 cmdmap = {
   'blog-latest' : cmd_blog_latest,
   'blog-body'   : cmd_blog_body,
+  'headerlink-class' : cmd_headerlink_class,
   #'blog-links'  cmd_blog_links,
 }
 
@@ -59,6 +68,8 @@ def process_sourcefile(filename, context=None, debug=False):
   text = getf(filename)
   if context is None:
     context = dict()
+
+  context.update(filename=filename)
 
   n_cmds = 0
   cmdstart = 0
@@ -74,28 +85,31 @@ def process_sourcefile(filename, context=None, debug=False):
     # "{{ text }}".format() returns "{ text }".
     use_format = False
     # Newlines are useful for for loops. Only remove spaces and tabs.
-    cmd = text[cmdstart : cmdend].removeprefix(CMD_OPEN).strip(' \t')
+    fullcmd = text[cmdstart : cmdend].removeprefix(CMD_OPEN).strip(' \t')
     if debug:
-      print("Processing cmd", cmd)
+      print("Processing cmd", fullcmd)
       input()
     n_cmds += 1
 
-    if cmd.endswith('.html'):
-      includetext = cmd_include_html(src_path, cmd, context)
+    cmdwords = fullcmd.split()
+    cmd = cmdwords[0]
+
+    if fullcmd.endswith('.html'):
+      includetext = cmd_include_html(src_path, fullcmd, context)
     elif cmd in cmdmap:
-      includetext = cmdmap[cmd](src_path, cmd, context)
+      includetext = cmdmap[cmd](src_path, fullcmd, context)
     elif cmd in spec.varmap:
       includetext = spec.varmap[cmd]
       use_format = True
-    elif cmd.startswith("for"):
-      includetext = cmd_for(src_path, cmd, context)
+    elif cmd == 'for':
+      includetext = cmd_for(src_path, fullcmd, context)
     else:
-      print("\tERROR: Unhandled jimothy command %s" % cmd)
+      print("\tERROR: Unhandled jimothy command %s" % fullcmd)
       cmdstart = cmdend + len(CMD_CLOSE)
       continue
 
     if includetext is None:
-      print("\tERROR: Cmd \"%s\" failed." % cmd)
+      print("\tERROR: Cmd \"%s\" failed." % fullcmd)
       continue
 
     if use_format:
