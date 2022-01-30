@@ -1,8 +1,10 @@
 <!DOCTYPE html>
+<html lang="en">
 <title>Quadrotor Simulation</title>
 <link rel="icon" type="image/png" href="/images/quad16.png">
 <link rel="stylesheet" href="main.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0">
+<meta name="description" content="An interactive 3D quadrotor simulation">
 
 <div class="headerdiv" id="header">
   <div class="headerdivinner">
@@ -16,15 +18,15 @@
 <script type="module" src="js/mathutils.js"></script>
 <script type="module" src="js/quadsim.js"></script>
 
-<h1 class="overlay" id="title">Quadrotor Simulation</h1>
-<div class="overlay-inst">WASD and arrow keys to fly around, left click to pan, right click to set a goal</div>
+<h1 id="simtitle">Quadrotor Simulation</h1>
+<div id="sim-inst">WASD and arrow keys to fly around, left click to pan, right click to set a goal</div>
 
 <div class="simdiv" id="mainsim">
   <div class="simdiv" id="simcell">
     <canvas id="sim"></canvas>
-    <div class="simdiv" class="overlay" id="speed"></div>
-    <div class="simdiv" class="overlay" id="info"></div>
-    <div class="simdiv" class="overlay" id="info2"></div>
+    <div class="simdiv" id="speed"></div>
+    <div class="simdiv" id="info"></div>
+    <div class="simdiv" id="info2"></div>
   </div>
 
   <div class="simdiv" id="simcellsettings" style="text-align: center">

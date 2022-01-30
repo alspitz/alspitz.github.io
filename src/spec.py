@@ -8,11 +8,9 @@ class Blog:
 blog_title = '<h2 class="blogtitle"> {blog.title} </h2>'
 blog_date = '<p class="blogdate"> {blog.date}'
 
-blog_header = """<!DOCTYPE html>
-<title>{blog.title}</title>
-<link rel="icon" type="image/png" href="/images/profile-square-tiny.png">
-<link rel="stylesheet" href="/main.css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0">"""
+blog_header = """<title>{blog.title}</title>
+<meta name="description" content="{blog.title}">
+"""
 
 varmap = {
   'blog-title' : blog_title,
