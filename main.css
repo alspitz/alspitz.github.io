@@ -53,14 +53,11 @@ footer {
 }
 
 .headerdiv {
-  background-color: #eeeeee;
-}
-
-.headerdivinner {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   margin: auto;
   text-align: center;
+  background-color: #eeeeee;
 }
 
 a.headerlink {
@@ -68,7 +65,7 @@ a.headerlink {
   text-decoration: none;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-size: 18px;
+  font-size: max(12px, min(18px, 5vw));
 }
 a.headerlink:hover {
   background-color: #cccccc;
@@ -246,6 +243,9 @@ code {
   div, img, h1, h2, h3, h4, p, li, pre, hr {
     max-width: min(94vw, 640px);
   }
+  .headerdiv {
+    max-width: min(100vw, 640px);
+  }
   .videos2 {
     flex-direction: column;
   }
@@ -271,10 +271,5 @@ code {
 @media (max-width: 768px) {
   #mainsim {
     display: block;
-  }
-}
-@media (max-width: 640px) {
-  .headerdiv {
-    max-width: 100%;
   }
 }
