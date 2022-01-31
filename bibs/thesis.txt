@@ -1,0 +1,10 @@
+@phdthesis{spitzer_dynamical_2021,
+author = {Alexander Spitzer},
+title = {Dynamical Model Learning and Inversion for Aggressive Quadrotor Flight},
+year = {2021},
+month = {December},
+school = {Carnegie Mellon University},
+address = {Pittsburgh, PA},
+number = {CMU-RI-TR-22-03},
+keywords = {control, learning, dynamics learning, regression, feedback linearization, aerial robotics, quadrotor, attitude control, model learning},
+}

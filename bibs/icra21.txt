@@ -1,0 +1,10 @@
+@article{spitzer_feedback_2021,
+   title={Feedback Linearization for Quadrotors with a Learned Acceleration Error Model},
+   url={http://dx.doi.org/10.1109/ICRA48506.2021.9561708},
+   DOI={10.1109/icra48506.2021.9561708},
+   journal={2021 IEEE International Conference on Robotics and Automation (ICRA)},
+   publisher={IEEE},
+   author={Spitzer, Alexander and Michael, Nathan},
+   year={2021},
+   month={May}
+}

@@ -1,0 +1,14 @@
+@article{spitzer_rotational_2020,
+  author    = {Alexander Spitzer and
+               Nathan Michael},
+  title     = {Rotational Error Metrics for Quadrotor Control},
+  journal   = {CoRR},
+  volume    = {abs/2011.11909},
+  year      = {2020},
+  url       = {https://arxiv.org/abs/2011.11909},
+  eprinttype = {arXiv},
+  eprint    = {2011.11909},
+  timestamp = {Thu, 26 Nov 2020 15:57:30 +0100},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2011-11909.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}

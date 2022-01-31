@@ -1,0 +1,6 @@
+@inproceedings{desaraju_experience-driven_2017,
+	title = {Experience-driven {Predictive} {Control} with {Robust} {Constraint} {Satisfaction} under {Time}-{Varying} {State} {Uncertainty}},
+	booktitle = {Robotics: {Science} and {Systems} {Conference} ({RSS}), {July}},
+	author = {Desaraju, Vishnu R. and Spitzer, Alexander E. and Michael, Nathan},
+	year = {2017},
+}

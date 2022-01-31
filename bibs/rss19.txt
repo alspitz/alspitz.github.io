@@ -1,0 +1,12 @@
+@inproceedings{spitzer_inverting_2019,
+	title = {Inverting {Learned} {Dynamics} {Models} for {Aggressive} {Multirotor} {Control}},
+	url = {http://dx.doi.org/10.15607/RSS.2019.XV.065},
+	doi = {10.15607/RSS.2019.XV.065},
+	urldate = {2020-08-02},
+	booktitle = {Robotics: {Science} and {Systems} {XV}},
+	publisher = {Robotics: Science and Systems Foundation},
+	author = {Spitzer, Alexander and Michael, Nathan},
+	month = jun,
+	year = {2019},
+	note = {arXiv: 1905.13441},
+}
