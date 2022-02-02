@@ -4,6 +4,8 @@ class Blog:
     self.title = title
     self.date = date
 
+  def __repr__(self):
+    return self.srcfn
 
 blog_title = '<h2 class="blogtitle"> {blog.title} </h2>'
 blog_date = '<p class="blogdate"> {blog.date}'
@@ -23,6 +25,11 @@ source_files = [
   "quadsim.html",
   "blog.html",
   "roterrormetrics.html"
+]
+
+# TODO Add all the rest: images, js, videos?
+root_files = [
+  "main.css",
 ]
 
 blog_entries = [
