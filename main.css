@@ -12,21 +12,21 @@ body {
   font-family: sans-serif;
 }
 
-div, img, h1, h2, h3, h4, p, li, pre, hr {
-  max-width: min(50vw, 1200px);
+div, img, h1, h2, h3, h4, p, li, pre, hr, table, tr, td {
+  max-width: min(1200px, min(94vw, max(640px, 50vw)));
+}
+
+.headerdiv {
+  max-width: min(1200px, min(100vw, max(640px, 50vw)));
 }
 
 div, pre {
   margin: auto;
 }
 
-h1, h2, h3, h4, li, p {
+h1, h2, h3, h4, li, p, table, tr, td {
   margin-left: auto;
   margin-right: auto;
-}
-
-.blogentries {
-  list-style-type: none;
 }
 
 a {
@@ -235,17 +235,15 @@ code {
   overflow-wrap: break-word;
 }
 
+.blogtabledates {
+  min-width: min(90px, 35vw);
+}
+
 .blogdate {
   text-align: center;
 }
 
 @media (max-width: 1280px) {
-  div, img, h1, h2, h3, h4, p, li, pre, hr {
-    max-width: min(94vw, 640px);
-  }
-  .headerdiv {
-    max-width: min(100vw, 640px);
-  }
   .videos2 {
     flex-direction: column;
   }

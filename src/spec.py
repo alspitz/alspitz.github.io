@@ -45,6 +45,6 @@ blog_entries = [
 
   Blog("pixracer_tx2_serial",
        "How to wire Pixracer serial to TX2 J121 UART 2",
-       "2019-??-??"
+       "2019"
   )
 ]

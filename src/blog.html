@@ -9,11 +9,14 @@
 <p>
 Hopefully useful pieces of information or insight.
 
-<ul class="blogentries">
+<table>
 {{ for blog in blog_entries
-  <li> {blog.date} - <a href="/blog/{blog.srcfn}.html">{blog.title}</a>
+<tr>
+  <td class="blogtabledates">{blog.date}</td>
+  <td><a href="/blog/{blog.srcfn}.html">{blog.title}</a></td>
+</tr>
 }}
-</ul>
+</table>
 
 {{ blog-latest }}
 
