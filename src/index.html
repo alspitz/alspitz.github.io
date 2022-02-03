@@ -1,6 +1,8 @@
 {{ meta.html }}
+<head>
 <title>Alex Spitzer</title>
 <meta name="description" content="Alex Spitzer's professional home page">
+<meta name="google-site-verification" content="411JE0nnTUavH0_98nDH_Md-BmYl13a-TcFflzQYysg"/>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-155097007-1"></script>
@@ -8,9 +10,13 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
+  gtag('consent', 'default', {
+       'ad_storage': 'denied',
+       'analytics_storage': 'denied'
+  });
   gtag('config', 'UA-155097007-1');
 </script>
+</head>
 
 {{ header.html }}
 
@@ -26,26 +32,23 @@
   </div>
 </div>
 
-<div class="container" id="aboutme">
-    <div id="mainimage">
-      <div class="circ-port">
-        <img class="main" alt="Alex Spitzer Headshot" src=images/profile.jpg width="381" height="536">
-      </div>
+<div id="aboutme">
+  <div id="mainimage">
+    <div class="circ-port">
+      <img class="main" alt="Alex Spitzer Headshot" src=images/profile.jpg width="381" height="536">
     </div>
-    <div id="aboutmepara">
-      <p>
-      I'm a Ph.D. student at <a target="_blank" href="https://www.cmu.edu">Carnegie Mellon University</a> advised by <a target="_blank" href="https://nmichael.me">Nathan Michael</a> and working with <a target="_blank" href="https://rislab.org">RISLAB</a> in the <a target="_blank" href="https://ri.cmu.edu">Robotics Institute</a>.
+  </div>
+  <div>
+    <p>
+    I'm a Ph.D. student at <a target="_blank" href="https://www.cmu.edu">Carnegie Mellon University</a> advised by <a target="_blank" href="https://nmichael.me">Nathan Michael</a> and working with <a target="_blank" href="https://rislab.org">RISLAB</a> in the <a target="_blank" href="https://ri.cmu.edu">Robotics Institute</a>.
 
-      Prior, I graduated with a double major in Computer Science (CS) and Electrical and Computer Engineering (ECE) from <a target="_blank" href="https://www.cornell.edu">Cornell University</a>, where I led the software team of <a target="_blank" href="https://cuauv.org">CUAUV</a>.
+    Prior, I graduated with a double major in Computer Science (CS) and Electrical and Computer Engineering (ECE) from <a target="_blank" href="https://www.cornell.edu">Cornell University</a>, where I led the software team of <a target="_blank" href="https://cuauv.org">CUAUV</a>.
 
-      My work explores dynamical model learning for quadrotors to enable agile and accurate flight.
-      </p>
+    My work explores dynamical model learning for quadrotors to enable agile and accurate flight.
 
-      <p style="margin: 25px auto;">
-      Contact me at my last name (lowercase) at cmu dot edu.
-      </p>
-    </div>
-
+    <p>
+    Contact me at my last name (lowercase) at cmu dot edu.
+  </div>
 </div>
 
 <h2> <a href="quadsim.html">Quadrotor Simulation</a> </h2>
