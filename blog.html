@@ -77,7 +77,7 @@ Okay, maybe it's negligible for small equations, but let's try the Standard Mode
 
 <p>
 Try refreshing the page, and compare what happens below to the equation pre-rendered as HTML on the left, and the one rendered at page load time on the right.
-When I tried this, there was a short but noticeable delay in the rendering of the cilent-side equations, during which the LaTeX code used can be seen.
+When I tried this, there was a short but noticeable delay in the rendering of the client-side equations, during which the LaTeX code used can be seen.
 It was a pleasant surprise that KaTeX is able to render this massive equation in under a second, so the user experience is not too bad, however.
 Credit to KaTeX for living up to its claim of fast equation rendering!
 Still, with many equations, the layout shifts on page-load can be jarring, and the build-time approach allows the entire page to remain JavaScript-free.
@@ -353,7 +353,7 @@ $$
 
 <p>
 To render equations during website build time,
-I first installed KaTex locally using <code>npm install katex</code>.
+I first installed KaTeX locally using <code>npm install katex</code>.
 I then use KaTeX's command line script, <code>cli.js</code>, for every equation that needs to be rendered.
 As an example, below is the webpage source for the first part of this web page.
 
@@ -425,7 +425,7 @@ I imagine there are ways to do this with Jekyll, Hugo, and others, but for the m
 
 <p>
 To display the rendered HTML properly, two things need to be available client-side: the KaTeX CSS file and the necessary fonts.
-You can either copy <code>katex.css</code> from the local KaTeX installation to somewhere in your deployment or retrieve it from some other server (e.g. see the <a target="_blank" href="https://katex.org/docs/browser.html">Starter Template</a> but remember that the JavaScript files are not needed).
+You can either copy <code>katex.css</code> from the local KaTeX installation to somewhere in your deployment or retrieve it from some other server (e.g. see the <a target="_blank" href="https://katex.org/docs/browser.html">Starter Template</a>, but remember that the JavaScript files are not needed).
 For the fonts, I've copied them all into the <code>fonts/</code> folder at the root of the deployment, since that is how they are referenced from the CSS file.
 
 <p>
