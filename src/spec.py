@@ -1,3 +1,8 @@
+from pathlib import Path
+import glob
+
+src_path = Path(__file__).resolve().parent
+
 class Blog:
   def __init__(self, srcfn, title, date=None):
     self.srcfn = srcfn
@@ -27,12 +32,27 @@ source_files = [
   "roterrormetrics.html"
 ]
 
+copies = {
+  '' : (
+    "main.css",
+    "katex.css",
+  ),
+
+  'fonts': glob.glob(str(src_path/"test"/"node_modules"/"katex"/"dist"/"fonts"/"*")),
+}
+
+
 # TODO Add all the rest: images, js, videos?
 root_files = [
   "main.css",
+  "katex.css",
 ]
 
 blog_entries = [
+  Blog("texmath",
+       "Build-time LaTeX equations on the web using KaTeX",
+       "2022-01-30"
+  ),
   Blog("bonding_netctl",
        "How to set up network interface bonding with netctl / Archlinux",
        "2021-03-06"

@@ -1,7 +1,10 @@
 import os
+import shutil
 
 import spec
 from util import getf
+
+from callkatex import htmlfromlatex
 
 CMD_OPEN = "{{"
 CMD_CLOSE = "}}"
@@ -50,6 +53,10 @@ def cmd_headerlink_class(src_path, cmd, context):
 
   return cls
 
+def cmd_math(src_paths, cmd, context):
+  latex_s = cmd.removeprefix("math").strip()
+  return htmlfromlatex(latex_s)
+
 def make_blogs(src_path, blogs, out_path):
   for blog in blogs:
     blogfn = "%s.html" % blog.srcfn
@@ -63,6 +70,22 @@ cmdmap = {
   #'blog-links'  cmd_blog_links,
 }
 
+def find_cmdend(text, cmdstart):
+  level = 0
+  i = cmdstart + len(CMD_OPEN)
+  while i + 1 < len(text):
+    if not level and text[i : i + len(CMD_CLOSE)] == CMD_CLOSE:
+      return i
+
+    elif text[i] == '{':
+      level += 1
+    elif text[i] == '}':
+      level -= 1
+
+    i += 1
+
+  return -1
+
 def process_sourcefile(filename, context=None, debug=False):
   print("%s %s" %  (filename, context), end='... ')
   text = getf(filename)
@@ -75,7 +98,8 @@ def process_sourcefile(filename, context=None, debug=False):
   cmdstart = 0
   while 1:
     cmdstart = text.find(CMD_OPEN, cmdstart)
-    cmdend = text.find(CMD_CLOSE, cmdstart)
+    #cmdend = text.find(CMD_CLOSE, cmdstart)
+    cmdend = find_cmdend(text, cmdstart)
     if cmdend < 0:
       break
 
@@ -103,6 +127,8 @@ def process_sourcefile(filename, context=None, debug=False):
       use_format = True
     elif cmd == 'for':
       includetext = cmd_for(src_path, fullcmd, context)
+    elif cmd == 'math':
+      includetext = cmd_math(src_path, fullcmd, context)
     else:
       print("\n\tERROR: Unhandled jimothy command %s" % fullcmd)
       cmdstart = cmdend + len(CMD_CLOSE)
@@ -152,6 +178,12 @@ if __name__ == "__main__":
   root_path = src_path.parent
   out_path = root_path.parent / "alspitz-deploy"
 
-  process(root_path, spec.root_files, out_path)
+  for dest, files in spec.copies.items():
+    for fname in files:
+      src = root_path / fname
+      dst = out_path / dest
+      os.makedirs(dst, exist_ok=True)
+      shutil.copy(src, dst)
+
   process(src_path, spec.source_files, out_path)
   make_blogs(src_path, spec.blog_entries, out_path)
