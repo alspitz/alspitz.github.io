@@ -244,7 +244,7 @@ $$
 
 <p>
 To render equations during website build time,
-I first installed KaTex locally using <code>npm install katex</code>.
+I first installed KaTeX locally using <code>npm install katex</code>.
 I then use KaTeX's command line script, <code>cli.js</code>, for every equation that needs to be rendered.
 As an example, below is the webpage source for the first part of this web page.
 
@@ -316,7 +316,7 @@ I imagine there are ways to do this with Jekyll, Hugo, and others, but for the m
 
 <p>
 To display the rendered HTML properly, two things need to be available client-side: the KaTeX CSS file and the necessary fonts.
-You can either copy <code>katex.css</code> from the local KaTeX installtion to somewhere in your deployment or retrieve it from some other server (e.g. see the <a target="_blank" href="https://katex.org/docs/browser.html">Starter Template</a> but remember that the JavaScript files are not needed).
+You can either copy <code>katex.css</code> from the local KaTeX installation to somewhere in your deployment or retrieve it from some other server (e.g. see the <a target="_blank" href="https://katex.org/docs/browser.html">Starter Template</a>, but remember that the JavaScript files are not needed).
 For the fonts, I've copied them all into the <code>fonts/</code> folder at the root of the deployment, since that is how they are referenced from the CSS file.
 
 <p>
