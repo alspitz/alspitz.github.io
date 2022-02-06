@@ -22,10 +22,11 @@ def cmd_include_html(src_path, cmd, context):
 
 def cmd_blog_latest(src_path, cmd, context):
   context['blog'] = spec.blog_entries[0]
+  context['blog_home'] = True
   return include("blog_entry_template.html")
 
 def cmd_blog_body(src_path, cmd, context):
-  return include("blog/%s.html" % context['blog'].srcfn)
+  return include(context['blog'].getlink())
 
 def cmd_for(src_path, cmd, context):
   forw, varname, inw, listw, itertext = cmd.split(None, 4)
@@ -59,9 +60,8 @@ def cmd_math(src_paths, cmd, context):
 
 def make_blogs(src_path, blogs, out_path):
   for blog in blogs:
-    blogfn = "%s.html" % blog.srcfn
     res = process_sourcefile(src_path/"blog_page_template.html", dict(blog=blog))
-    write_file(out_path/"blog"/blogfn, res)
+    write_file(out_path/blog.getlink(), res)
 
 cmdmap = {
   'blog-latest' : cmd_blog_latest,
@@ -138,7 +138,10 @@ def process_sourcefile(filename, context=None, debug=False):
       print("\n\tERROR: Cmd \"%s\" failed." % fullcmd)
       continue
 
-    if use_format:
+    # Assume it's a function
+    if not isinstance(includetext, str):
+      includetext = includetext(**context)
+    elif use_format:
       includetext = includetext.format(**context)
 
     text = text[:cmdstart] + includetext + text[cmdend + len(CMD_CLOSE):]
@@ -156,8 +159,12 @@ def write_file(outfile, res):
       write_file = False
 
   if write_file:
-    print("write to %s (%d macros). Press Enter to continue" % (outfile, res.n_cmds))
-    input()
+    if ask_to_write:
+      print("write to %s (%d macros). Press Enter to continue" % (outfile, res.n_cmds))
+      input()
+    else:
+      print()
+
     with open(outfile, "w") as f:
       f.write(res.text)
 
@@ -173,6 +180,8 @@ def process(path, files, out_path):
 
 if __name__ == "__main__":
   from pathlib import Path
+
+  ask_to_write = False
 
   src_path = Path(__file__).resolve().parent
   root_path = src_path.parent
