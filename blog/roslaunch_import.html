@@ -16,6 +16,12 @@
   <a class="headerlink" href="/#papers">Papers</a>
 </div>
 
+<div class="navigation">
+  <div class="alignleft"><a href="/blog/bonding_netctl.html">Next</a></div>
+  <div class="aligncenter"><a href="/blog.html">Blog Home</a></div>
+  <div class="alignright"><a href="/blog/pixracer_tx2_serial.html">Prev</a></div>
+</div>
+
 <h2 class="blogtitle"> How to use import statement inside of an eval in a ROS roslaunch file </h2>
 
 <p class="blogdate"> 2021-02-05
@@ -50,6 +56,12 @@ While this certainly looks messy, you can break more complicated expressions int
 &lt;arg name=&quot;ldc&quot; default=&quot;eval(arg('imp') + '(\'yaml\')').safe_load(open(eval(arg('fn'))))&quot;/&gt;
 &lt;arg name=&quot;ex&quot;  default=&quot;eval(arg('imp') + '(\'os\')').path.exists(eval(arg('fn')))&quot;/&gt;
 &lt;arg name=&quot;controller_type&quot; default=&quot;$(eval eval(arg('ldc')).get('controller', arg('default_controller_type')) if eval(arg('ex')) else arg('default_controller_type'))&quot;/&gt;</code></pre>
+
+<div class="navigation">
+  <div class="alignleft"><a href="/blog/bonding_netctl.html">Next</a></div>
+  <div class="aligncenter"><a href="#">Top</a></div>
+  <div class="alignright"><a href="/blog/pixracer_tx2_serial.html">Prev</a></div>
+</div>
 
 <hr>
 <footer>&#169; 2022 Alex Spitzer</footer>

@@ -240,6 +240,23 @@ code {
   text-align: center;
 }
 
+.navigation {
+  margin-top: 1em;
+  display: flex;
+}
+.alignleft {
+  flex: 1;
+  text-align: left;
+}
+.aligncenter {
+  flex: 1;
+  text-align: center;
+}
+.alignright {
+  flex: 1;
+  text-align: right;
+}
+
 @media (max-width: 1280px) {
   .videos2 {
     flex-direction: column;
