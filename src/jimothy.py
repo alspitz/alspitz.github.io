@@ -63,10 +63,15 @@ def make_blogs(src_path, blogs, out_path):
     res = process_sourcefile(src_path/"blog_page_template.html", dict(blog=blog))
     write_file(out_path/blog.getlink(), res)
 
+def cmd_escape(src_path, cmd, context):
+  return f"{CMD_OPEN} {cmd[7:]}{CMD_CLOSE}"
+
 cmdmap = {
   'blog-latest' : cmd_blog_latest,
   'blog-body'   : cmd_blog_body,
   'headerlink-class' : cmd_headerlink_class,
+  'for' : cmd_for,
+  'math' : cmd_math,
   #'blog-links'  cmd_blog_links,
 }
 
@@ -75,10 +80,11 @@ def find_cmdend(text, cmdstart):
   i = cmdstart + len(CMD_OPEN)
   while i + 1 < len(text):
     if not level and text[i : i + len(CMD_CLOSE)] == CMD_CLOSE:
-      return i
+      return i + len(CMD_CLOSE)
 
     elif text[i] == '{':
       level += 1
+
     elif text[i] == '}':
       level -= 1
 
@@ -98,9 +104,12 @@ def process_sourcefile(filename, context=None, debug=False):
   cmdstart = 0
   while 1:
     cmdstart = text.find(CMD_OPEN, cmdstart)
-    #cmdend = text.find(CMD_CLOSE, cmdstart)
+    if cmdstart < 0:
+      break
+
     cmdend = find_cmdend(text, cmdstart)
     if cmdend < 0:
+      print(f"ERROR: Unclosed command starting at {filename}:{cmdstart}")
       break
 
     # Seems bad and hacky. Let's see if it will last...
@@ -109,7 +118,7 @@ def process_sourcefile(filename, context=None, debug=False):
     # "{{ text }}".format() returns "{ text }".
     use_format = False
     # Newlines are useful for for loops. Only remove spaces and tabs.
-    fullcmd = text[cmdstart : cmdend].removeprefix(CMD_OPEN).strip(' \t')
+    fullcmd = text[cmdstart : cmdend - len(CMD_CLOSE)].removeprefix(CMD_OPEN).strip(' \t')
     if debug:
       print("\n\tProcessing cmd", fullcmd)
       input()
@@ -125,18 +134,16 @@ def process_sourcefile(filename, context=None, debug=False):
     elif cmd in spec.varmap:
       includetext = spec.varmap[cmd]
       use_format = True
-    elif cmd == 'for':
-      includetext = cmd_for(src_path, fullcmd, context)
-    elif cmd == 'math':
-      includetext = cmd_math(src_path, fullcmd, context)
+    elif cmd == 'escape':
+      includetext = cmd_escape(src_path, fullcmd, context)
     else:
       print("\n\tERROR: Unhandled jimothy command %s" % fullcmd)
-      cmdstart = cmdend + len(CMD_CLOSE)
+      cmdstart = cmdend
       continue
 
     if includetext is None:
       print("\n\tERROR: Cmd \"%s\" failed." % fullcmd)
-      continue
+      includetext = ""
 
     # Assume it's a function
     if not isinstance(includetext, str):
@@ -144,9 +151,12 @@ def process_sourcefile(filename, context=None, debug=False):
     elif use_format:
       includetext = includetext.format(**context)
 
-    text = text[:cmdstart] + includetext + text[cmdend + len(CMD_CLOSE):]
+    text = text[:cmdstart] + includetext + text[cmdend:]
     if debug:
       print(text[cmdstart:cmdstart + 20])
+
+    if cmd =='escape':
+      cmdstart = cmdend
 
   return Result(text, n_cmds)
 
