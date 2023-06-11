@@ -364,7 +364,7 @@ I then use KaTeX's command line script, <code>cli.js</code>, for every equation 
 As an example, below is the webpage source for the first part of this web page.
 
 <pre><code>Here is the quadratic formula using KaTeX, rendered at build-time:
-{{ math_ \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} }} </code></pre>
+{{ math \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}}} </code></pre>
 
 <p>
 A small <a target="_blank" href="https://github.com/alspitz/alspitz.github.io/blob/master/src/jimothy.py">Python script</a> then replaces the "math" command with the output of running <code>cli.js</code> with the LaTeX string.
