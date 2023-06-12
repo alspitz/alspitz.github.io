@@ -25,3 +25,10 @@ python src/jimothy.py
 ```
 
 After that, inspect changes in alspitz-deploy, commit, and push.
+
+# Test Locally
+
+To test changes locally you can start a webserver in the alspitz-deploy repo with
+```
+python -m http.server
+```
