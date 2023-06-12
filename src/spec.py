@@ -61,21 +61,19 @@ source_files = [
   "roterrormetrics.html"
 ]
 
+# TODO Add all the rest: images, js, videos?
 copies = {
   '' : (
     "main.css",
     "katex.css",
   ),
 
+  'media': (
+    glob.glob("media/*")
+  ),
+
   'fonts': glob.glob(str(src_path/"test"/"node_modules"/"katex"/"dist"/"fonts"/"*")),
 }
-
-
-# TODO Add all the rest: images, js, videos?
-root_files = [
-  "main.css",
-  "katex.css",
-]
 
 blog_entries = [
   Blog("texmath",
